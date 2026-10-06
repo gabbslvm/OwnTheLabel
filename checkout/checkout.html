@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="shop.css">
+    <link rel="stylesheet" href="checkout.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light otl-navbar is-scrolled">
+            <div class="container-fluid px-5">
+                <a class="navbar-brand nav-title d-none d-xl-block" href="/homepage.html">Own The Label<sup>TM</sup></a>
+                <a class="navbar-brand logo" href="/homepage.html"><img src="/img/logo2.png" alt="Own The Label"></a>
+                <a href="/shop/shop.html" class="btn btn-otl btn-sm">← Continue Shopping</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="checkout">
+            <div class="container">
+                <h1 class="h2 checkout-title">CHECKOUT</h1>
+
+                <div id="empty-cart" class="text-center d-none">
+                    <p class="mb-4">Your cart is empty.</p>
+                    <a href="/shop/shop.html" class="btn btn-otl">Go to Shop</a>
+                </div>
+
+                <div class="row" id="checkout-content">
+                    <div class="col-lg-7 mb-5">
+                        <form id="checkout-form" novalidate>
+                            <h2 class="h5 section-label">SHIPPING DETAILS</h2>
+                            <div class="form-group">
+                                <label for="full-name">Full Name</label>
+                                <input type="text" class="form-control" id="full-name" required>
+                                <div class="invalid-feedback">Please enter your full name.</div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-7">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                    <div class="invalid-feedback">Enter a valid email.</div>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label for="phone">Mobile Number</label>
+                                    <input type="text" class="form-control" id="phone" placeholder="09XXXXXXXXX"
+                                        pattern="09[0-9]{9}" required>
+                                    <div class="invalid-feedback">Format: 09XXXXXXXXX</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="House/Unit, Street, Barangay" required>
+                                <div class="invalid-feedback">Please enter your address.</div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="city" required>
+                                    <div class="invalid-feedback">Please enter your city.</div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="postal">Postal Code</label>
+                                    <input type="text" class="form-control" id="postal" pattern="[0-9]{4}" required>
+                                    <div class="invalid-feedback">4 digits.</div>
+                                </div>
+                            </div>
+
+                            <h2 class="h5 section-label mt-5">PAYMENT METHOD</h2>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-cod" value="cod" checked>
+                                <label class="form-check-label" for="pay-radio-cod">Cash on Delivery</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-gcash" value="gcash">
+                                <label class="form-check-label" for="pay-radio-gcash">GCash</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-card" value="card">
+                                <label class="form-check-label" for="pay-radio-card">Credit / Debit Card</label>
+                            </div>
+
+                            <div id="pay-cod" class="pay-panel">
+                                <p class="mb-0">Pay in cash when your order arrives.</p>
+                            </div>
+
+                            <div id="pay-gcash" class="pay-panel d-none">
+                                <label for="gcash-number">GCash Number</label>
+                                <input type="text" class="form-control" id="gcash-number" placeholder="09XXXXXXXXX"
+                                    pattern="09[0-9]{9}">
+                                <div class="invalid-feedback">Format: 09XXXXXXXXX</div>
+                            </div>
+
+                            <div id="pay-card" class="pay-panel d-none">
+                                <div class="form-group">
+                                    <label for="card-number">Card Number</label>
+                                    <input type="text" class="form-control" id="card-number"
+                                        placeholder="1234 5678 9012 3456" maxlength="19" pattern="[0-9 ]{19}">
+                                    <div class="invalid-feedback">Enter 16 digits.</div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="card-expiry">Expiry</label>
+                                        <input type="text" class="form-control" id="card-expiry" placeholder="MM/YY"
+                                            maxlength="5" pattern="(0[1-9]|1[0-2])\/[0-9]{2}">
+                                        <div class="invalid-feedback">Format: MM/YY</div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="card-cvv">CVV</label>
+                                        <input type="text" class="form-control" id="card-cvv" placeholder="123"
+                                            maxlength="3" pattern="[0-9]{3}">
+                                        <div class="invalid-feedback">3 digits.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="pay-error" class="alert alert-danger d-none mt-3"></div>
+
+                            <button type="submit" id="place-order" class="btn btn-otl btn-block btn-lg mt-4">
+                                PLACE ORDER
+                            </button>
+                            <small class="d-block text-center mt-3 text-muted">
+                                Payments are simulated. No real charges are made.
+                            </small>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="order-summary">
+                            <h2 class="h5 section-label">ORDER SUMMARY</h2>
+                            <div id="summary-items"></div>
+                            <hr>
+                            <div class="summary-row"><span>Subtotal</span><span id="subtotal"></span></div>
+                            <div class="summary-row"><span>Shipping</span><span id="shipping"></span></div>
+                            <div class="summary-row total"><span>Total</span><span id="total"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="receipt" class="d-none">
+                    <div class="receipt-box">
+                        <div class="text-center mb-4">
+                            <h2 class="h3">ORDER CONFIRMED</h2>
+                            <p class="text-muted mb-0">Thank you for shopping with Own The Label Co.</p>
+                        </div>
+                        <div class="summary-row"><span>Order No.</span><strong id="r-orderno"></strong></div>
+                        <div class="summary-row"><span>Date</span><span id="r-date"></span></div>
+                        <div class="summary-row"><span>Status</span><span id="r-status"></span></div>
+                        <div class="summary-row"><span>Payment</span><span id="r-payment"></span></div>
+                        <hr>
+                        <div id="r-customer"></div>
+                        <hr>
+                        <div id="r-items"></div>
+                        <hr>
+                        <div class="summary-row"><span>Subtotal</span><span id="r-subtotal"></span></div>
+                        <div class="summary-row"><span>Shipping</span><span id="r-shipping"></span></div>
+                        <div class="summary-row total"><span>Total</span><span id="r-total"></span></div>
+                        <div class="text-center mt-4 no-print">
+                            <button class="btn btn-otl mr-2" onclick="window.print()">Print Receipt</button>
+                            <a href="shop.html" class="btn btn-outline-dark" style="border-radius:0;">Back to Shop</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <a href="/homepage.html" class="footer-logo">
+                        <img src="/img/logo3.png" alt="Own The Label">
+                    </a>
+                </div>
+                <div class="col-md-6 text-center">
+                    <p class="footer-tagline">
+                        Same Brand Never The Same Look
+                    </p>
+                </div>
+                <div class="col-md-3 text-right">
+                    <div class="social-icons">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
+                            <img src="/img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="copyright">
+                        © 2025 Own The Label Co.
+                    </p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="cart.js"></script>
+    <script src="checkout.js"></script>
+</body>
+
+</html>
