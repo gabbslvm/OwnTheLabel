@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Checkout | Own The Label Co.</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -15,11 +15,13 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light otl-navbar is-scrolled">
-            <div class="container-fluid px-5">
+        <nav class="navbar navbar-expand-xl navbar-light otl-navbar is-scrolled" id="site-header">
+            <div class="container-fluid px-3 px-xl-5">
                 <a class="navbar-brand nav-title d-none d-xl-block" href="../index.html">Own The Label<sup>TM</sup></a>
-                <a class="navbar-brand logo" href="../index.html"><img src="../img/logo2.png" alt="Own The Label"></a>
                 <a href="../shop/shop.html" class="btn btn-otl btn-sm">← Continue Shopping</a>
+                <a class="navbar-brand logo order-xl-last" href="../index.html">
+                    <img src="../img/logo2.png" alt="Own The Label">
+                </a>
             </div>
         </nav>
     </header>
@@ -58,7 +60,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="House/Unit, Street, Barangay" required>
+                                <input type="text" class="form-control" id="address"
+                                    placeholder="House/Unit, Street, Barangay" required>
                                 <div class="invalid-feedback">Please enter your address.</div>
                             </div>
                             <div class="form-row">
@@ -76,15 +79,18 @@
 
                             <h2 class="h5 section-label mt-5">PAYMENT METHOD</h2>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-cod" value="cod" checked>
+                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-cod"
+                                    value="cod" checked>
                                 <label class="form-check-label" for="pay-radio-cod">Cash on Delivery</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-gcash" value="gcash">
+                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-gcash"
+                                    value="gcash">
                                 <label class="form-check-label" for="pay-radio-gcash">GCash</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-card" value="card">
+                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-card"
+                                    value="card">
                                 <label class="form-check-label" for="pay-radio-card">Credit / Debit Card</label>
                             </div>
 
@@ -165,7 +171,8 @@
                         <div class="summary-row total"><span>Total</span><span id="r-total"></span></div>
                         <div class="text-center mt-4 no-print">
                             <button class="btn btn-otl mr-2" onclick="window.print()">Print Receipt</button>
-                            <a href="../shop/shop.html" class="btn btn-outline-dark" style="border-radius:0;">Back to Shop</a>
+                            <a href="../shop/shop.html" class="btn btn-outline-dark" style="border-radius:0;">Back to
+                                Shop</a>
                         </div>
                     </div>
                 </div>
@@ -189,7 +196,8 @@
                 <div class="col-md-3 text-right">
                     <div class="social-icons">
                         <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
-                            <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
+                            <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram"
+                                class="social-icon">
                         </a>
                     </div>
                 </div>
@@ -209,9 +217,9 @@
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../shop/cart.js"></script>
+    <script src="../js/shared.js"></script>
     <script src="checkout.js"></script>
 </body>
 

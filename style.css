@@ -3,6 +3,11 @@
     src: url('fonts/bernoru-blackultraexpanded.otf') format('opentype');
 }
 
+@font-face {
+    font-family: 'Brice Semi Expanded';
+    src: url('fonts/your-brice-semi-expanded-file-name.otf') format('opentype');
+}
+
 :root {
     --otl-white: #F7F7F5;
     --otl-black: #080808;
@@ -277,7 +282,7 @@ a {
 }
 
 .section-title {
-    font-family: 'Brice Semi Expanded', sans-serif;
+    font-family: 'Inter', sans-serif;
     color: var(--otl-black);
     text-transform: uppercase;
     margin-bottom: 1rem;
@@ -447,7 +452,7 @@ a {
 
 .footer-tagline {
     color: var(--otl-white);
-    font-family: 'Brice Semi Expanded', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.5rem;
     margin: 0;
 }

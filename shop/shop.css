@@ -1,7 +1,3 @@
-body {
-    font-family: "Roboto Condensed", sans-serif;
-}
-
 #shop-products {
     padding: 130px 0 80px;
     background: var(--otl-white);
@@ -74,7 +70,7 @@ body {
     transform: scale(1.05);
 }
 
-.product-card h6 {
+.product-card h3 {
     margin-top: 18px;
     font-size: 1rem;
     font-weight: 600;
