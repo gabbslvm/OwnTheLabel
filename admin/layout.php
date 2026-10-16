@@ -45,6 +45,7 @@ function admin_header($title, $active)
 		'inventory' => ['Inventory', 'inventory.php'],
 		'orders' => ['Orders', 'orders.php'],
 		'reports' => ['Reports', 'reports.php'],
+		'messages' => ['Messages', 'messages.php'],
 	];
 	$flash = $_SESSION['admin_flash'] ?? null;
 	unset($_SESSION['admin_flash']);
@@ -60,7 +61,7 @@ function admin_header($title, $active)
 	<body>
 	<div class="admin-shell">
 		<header class="admin-topbar">
-			<a class="admin-brand" href="dashboard.php">OTL / ADMIN</a>
+			<a class="admin-brand" href="dashboard.php"><img src="../img/logo2.png" alt="Own The Label"><span>ADMIN</span></a>
 			<div class="admin-topbar-meta">
 				<span><?= admin_escape($_SESSION['name'] ?? 'Admin') ?></span>
 				<a href="../index.html">Store</a>

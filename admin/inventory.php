@@ -1,7 +1,7 @@
 <?php
 require "layout.php";
 
-$categories = ['Hoodies', 'Shirts', 'Shorts', 'Barong', 'Polo'];
+$categories = ['Polo', 'Shorts', 'Hoodies', 'Barong', 'Shirts'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (!admin_check_csrf()) {
@@ -10,36 +10,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 
 	$action = $_POST['action'] ?? '';
-	if ($action === 'create') {
-		$name = trim($_POST['name'] ?? '');
+	if ($action === 'add_stock') {
 		$category = $_POST['category'] ?? '';
-		$price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
-		$image = trim($_POST['image'] ?? '');
-		if ($name === '' || strlen($name) > 100 || !in_array($category, $categories, true) || $price === false || $price <= 0 || $image === '' || strlen($image) > 255) {
-			admin_flash('Enter a valid name, category, price, and image path.', 'error');
+		$productId = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
+		$variantId = filter_input(INPUT_POST, 'variant_id', FILTER_VALIDATE_INT);
+		$quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT);
+		if (!in_array($category, $categories, true) || !$productId || !$variantId || $quantity === false || $quantity < 1) {
+			admin_flash('Choose a category, product, size, and quantity greater than zero.', 'error');
 			admin_redirect('inventory.php');
 		}
-		$conn->begin_transaction();
-		try {
-			$stmt = $conn->prepare('INSERT INTO products (name, category, price, image, is_active) VALUES (?, ?, ?, ?, 1)');
-			$stmt->bind_param('ssds', $name, $category, $price, $image);
-			$stmt->execute();
-			$productId = $conn->insert_id;
-			$variant = $conn->prepare('INSERT INTO product_variants (product_id, size, color, stock) VALUES (?, ?, ?, 0)');
-			$color = trim($_POST['color'] ?? 'Black');
-			if ($color === '' || strlen($color) > 30) {
-				throw new RuntimeException('Enter a valid color.');
-			}
-			foreach (['Small', 'Medium', 'Large'] as $size) {
-				$variant->bind_param('iss', $productId, $size, $color);
-				$variant->execute();
-			}
-			$conn->commit();
-			admin_flash('Product added with Small, Medium, and Large variants. Set stock below.');
-		} catch (Throwable $error) {
-			$conn->rollback();
-			admin_flash('Product could not be added. Check the details and try again.', 'error');
-		}
+		$stmt = $conn->prepare('UPDATE product_variants v JOIN products p ON p.id = v.product_id SET v.stock = v.stock + ? WHERE v.id = ? AND p.id = ? AND p.category = ?');
+		$stmt->bind_param('iiis', $quantity, $variantId, $productId, $category);
+		$stmt->execute();
+		admin_flash($stmt->affected_rows ? 'Stock quantity added.' : 'That product and size could not be found for the selected category.', $stmt->affected_rows ? 'success' : 'error');
 		admin_redirect('inventory.php');
 	}
 
@@ -74,24 +57,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		admin_redirect('inventory.php');
 	}
 
-	if ($action === 'stock') {
-		$variantId = filter_input(INPUT_POST, 'variant_id', FILTER_VALIDATE_INT);
-		$stock = filter_input(INPUT_POST, 'stock', FILTER_VALIDATE_INT);
-		if (!$variantId || $stock === false || $stock < 0) {
-			admin_flash('Stock must be a whole number of zero or more.', 'error');
-			admin_redirect('inventory.php');
-		}
-		$stmt = $conn->prepare('UPDATE product_variants SET stock = ? WHERE id = ?');
-		$stmt->bind_param('ii', $stock, $variantId);
-		$stmt->execute();
-		admin_flash('Variant stock updated.');
-		admin_redirect('inventory.php');
-	}
-
 	admin_flash('Unknown inventory action.', 'error');
 	admin_redirect('inventory.php');
 }
 
+$productOptionsByCategory = array_fill_keys($categories, []);
+$inventoryProducts = $conn->query('SELECT id, name, category FROM products ORDER BY category, name');
+while ($productOption = $inventoryProducts->fetch_assoc()) {
+	if (isset($productOptionsByCategory[$productOption['category']])) {
+		$productOptionsByCategory[$productOption['category']][] = $productOption;
+	}
+}
+$variantsByProduct = [];
+$inventoryVariants = $conn->query('SELECT v.id, v.product_id, v.size FROM product_variants v JOIN products p ON p.id = v.product_id ORDER BY p.category, p.name, v.id');
+while ($variantOption = $inventoryVariants->fetch_assoc()) {
+	$variantsByProduct[$variantOption['product_id']][] = $variantOption;
+}
 $products = $conn->query('SELECT p.id, p.name, p.category, p.price, p.image, p.is_active, p.is_featured, v.id AS variant_id, v.size, v.color, v.stock FROM products p LEFT JOIN product_variants v ON v.product_id = p.id ORDER BY p.id DESC, v.id ASC');
 $productRows = [];
 while ($row = $products->fetch_assoc()) {
@@ -103,31 +84,34 @@ while ($row = $products->fetch_assoc()) {
 admin_header('Inventory Maintenance', 'inventory');
 ?>
 <section class="admin-panel">
-	<div class="admin-panel-heading"><h2>Add product</h2></div>
+	<div class="admin-panel-heading"><h2>Add stock</h2></div>
 	<div class="admin-panel-body">
-		<form method="post" class="admin-form-grid">
-			<?php admin_csrf_field(); ?><input type="hidden" name="action" value="create">
-			<div class="admin-field"><label for="new-name">Product name</label><input class="admin-input" id="new-name" name="name" maxlength="100" required></div>
-			<div class="admin-field"><label for="new-category">Category</label><select class="admin-select" id="new-category" name="category" required><?php foreach ($categories as $category): ?><option><?= admin_escape($category) ?></option><?php endforeach; ?></select></div>
-			<div class="admin-field"><label for="new-price">Price (PHP)</label><input class="admin-input" id="new-price" name="price" type="number" min="0.01" step="0.01" required></div>
-			<div class="admin-field"><label for="new-color">Variant color</label><input class="admin-input" id="new-color" name="color" maxlength="30" value="Black" required></div>
-			<div class="admin-field admin-field-wide"><label for="new-image">Image path</label><input class="admin-input" id="new-image" name="image" maxlength="255" placeholder="img/products/shirts/item.jpg" required></div>
-			<div><button class="admin-button primary" type="submit">Add product</button></div>
-		</form>
+		<div class="admin-category-stock-list">
+			<?php foreach ($categories as $category) { $categoryKey = strtolower($category); ?>
+				<form method="post" class="admin-category-stock-form">
+					<?php admin_csrf_field(); ?><input type="hidden" name="action" value="add_stock"><input type="hidden" name="category" value="<?= admin_escape($category) ?>">
+					<strong class="admin-category-stock-label"><?= admin_escape($category) ?></strong>
+					<div class="admin-field"><label for="stock-product-<?= admin_escape($categoryKey) ?>">Exact product name</label><select class="admin-select" id="stock-product-<?= admin_escape($categoryKey) ?>" name="product_id" data-role="product" required><option value="">Choose product</option><?php foreach ($productOptionsByCategory[$category] as $productOption) { ?><option value="<?= (int)$productOption['id'] ?>"><?= admin_escape($productOption['name']) ?></option><?php } ?></select></div>
+					<div class="admin-field"><label for="stock-size-<?= admin_escape($categoryKey) ?>">Size</label><select class="admin-select" id="stock-size-<?= admin_escape($categoryKey) ?>" name="variant_id" data-role="size" required disabled><option value="">Choose size</option><?php foreach ($productOptionsByCategory[$category] as $productOption) { foreach ($variantsByProduct[$productOption['id']] ?? [] as $variantOption) { ?><option value="<?= (int)$variantOption['id'] ?>" data-product="<?= (int)$productOption['id'] ?>"><?= admin_escape($variantOption['size']) ?></option><?php } } ?></select></div>
+					<div class="admin-field"><label for="stock-quantity-<?= admin_escape($categoryKey) ?>">Quantity to add</label><input class="admin-input" id="stock-quantity-<?= admin_escape($categoryKey) ?>" name="quantity" type="number" min="1" step="1" value="1" required></div>
+					<button class="admin-button primary" type="submit">Add stock</button>
+				</form>
+			<?php } ?>
+		</div>
 	</div>
 </section>
 <section class="admin-panel">
 	<div class="admin-panel-heading"><h2>Products and variant stock</h2></div>
-	<?php if ($productRows): ?>
+	<?php if ($productRows) { ?>
 		<div class="admin-table-wrap"><table class="admin-table">
 			<thead><tr><th>Product details</th><th>Price</th><th>Variants / stock</th><th>Visibility</th></tr></thead>
-			<tbody><?php foreach ($productRows as $entry): $product = $entry['product']; ?>
+			<tbody><?php foreach ($productRows as $entry) { $product = $entry['product']; ?>
 				<tr>
 					<td class="admin-product-cell">
 						<form method="post" class="admin-grid" style="gap:7px">
 							<?php admin_csrf_field(); ?><input type="hidden" name="action" value="update"><input type="hidden" name="product_id" value="<?= (int)$product['id'] ?>">
 							<input class="admin-input" name="name" aria-label="Product name" value="<?= admin_escape($product['name']) ?>" maxlength="100" required>
-							<select class="admin-select" name="category" aria-label="Category"><?php foreach ($categories as $category): ?><option value="<?= admin_escape($category) ?>" <?= $product['category'] === $category ? 'selected' : '' ?>><?= admin_escape($category) ?></option><?php endforeach; ?></select>
+							<select class="admin-select" name="category" aria-label="Category"><?php foreach ($categories as $category) { ?><option value="<?= admin_escape($category) ?>" <?= $product['category'] === $category ? 'selected' : '' ?>><?= admin_escape($category) ?></option><?php } ?></select>
 							<input class="admin-input" name="price" type="number" min="0.01" step="0.01" aria-label="Price in PHP" value="<?= admin_escape($product['price']) ?>" required>
 							<input class="admin-input" name="image" aria-label="Image path" value="<?= admin_escape($product['image']) ?>" maxlength="255" required>
 							<button class="admin-button" type="submit">Save details</button>
@@ -135,22 +119,30 @@ admin_header('Inventory Maintenance', 'inventory');
 					</td>
 					<td><?= admin_money($product['price']) ?></td>
 					<td class="admin-stock-cell">
-						<?php if (!empty($entry['variants'])): foreach ($entry['variants'] as $variant): ?>
-							<form method="post" class="admin-inline-form" style="margin:0 0 7px">
-								<?php admin_csrf_field(); ?><input type="hidden" name="action" value="stock"><input type="hidden" name="variant_id" value="<?= (int)$variant['variant_id'] ?>">
-								<span class="admin-muted"><?= admin_escape($variant['size']) ?> / <?= admin_escape($variant['color']) ?></span>
-								<input class="admin-input" name="stock" type="number" min="0" step="1" value="<?= (int)$variant['stock'] ?>" aria-label="Stock for <?= admin_escape($product['name'] . ' ' . $variant['size']) ?>">
-								<button class="admin-button" type="submit">Set</button>
-							</form>
-						<?php endforeach; else: ?><span class="admin-muted">No variants</span><?php endif; ?>
+						<?php if (!empty($entry['variants'])) { foreach ($entry['variants'] as $variant) { ?>
+							<div class="admin-stock-row"><span><?= admin_escape($variant['size']) ?></span><strong><?= (int)$variant['stock'] ?></strong></div>
+						<?php } } else { ?><span class="admin-muted">No variants</span><?php } ?>
 					</td>
 					<td><form method="post" class="admin-inline-form">
 						<?php admin_csrf_field(); ?><input type="hidden" name="action" value="toggle"><input type="hidden" name="product_id" value="<?= (int)$product['id'] ?>"><input type="hidden" name="is_active" value="<?= $product['is_active'] ? 0 : 1 ?>">
 						<span class="admin-badge <?= $product['is_active'] ? 'active' : 'disabled' ?>"><?= $product['is_active'] ? 'Active' : 'Hidden' ?></span><button class="admin-button" type="submit"><?= $product['is_active'] ? 'Hide' : 'Show' ?></button>
 					</form></td>
 				</tr>
-			<?php endforeach; ?></tbody>
+			<?php } ?></tbody>
 		</table></div>
-	<?php else: ?><div class="admin-empty">No products found.</div><?php endif; ?>
+	<?php } else { ?><div class="admin-empty">No products found.</div><?php } ?>
 </section>
+<script>
+document.querySelectorAll('.admin-category-stock-form').forEach(function (form) {
+	const productSelect = form.querySelector('[data-role="product"]');
+	const sizeSelect = form.querySelector('[data-role="size"]');
+	productSelect.addEventListener('change', function () {
+		for (const option of sizeSelect.options) {
+			option.hidden = option.value !== '' && option.dataset.product !== productSelect.value;
+		}
+		sizeSelect.value = '';
+		sizeSelect.disabled = !productSelect.value;
+	});
+});
+</script>
 <?php admin_footer(); ?>
