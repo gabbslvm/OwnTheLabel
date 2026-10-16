@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Own The Label Co.</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../shop/shop.css">
+    <style>
+        #auth { padding: 150px 0 90px; background: var(--otl-white); }
+        .auth-box { max-width: 420px; margin: 0 auto; padding: 40px; background: #fff; border: 1px solid var(--concrete); }
+        .auth-box .form-control { border-radius: 0; border: 1px solid var(--concrete); }
+        .auth-title { font-weight: 800; letter-spacing: 3px; margin-bottom: 30px; text-align: center; }
+        .auth-switch { text-align: center; margin-top: 20px; font-size: .9rem; }
+        .auth-switch a { color: var(--otl-black); font-weight: 700; text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-xl navbar-light otl-navbar is-scrolled" id="site-header">
+            <div class="container-fluid px-3 px-xl-5">
+                <a class="navbar-brand nav-title d-none d-xl-block" href="../index.html">Own The Label<sup>TM</sup></a>
+                <a class="navbar-brand logo order-xl-last" href="../index.html">
+                    <img src="../img/logo2.png" alt="Own The Label">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../shop/shop.html">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../brand/brand.html">Brand</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../contact/Contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="auth">
+            <div class="container">
+                <div class="auth-box">
+                    <h1 class="h4 auth-title" id="auth-title">LOGIN</h1>
+
+                    <form id="login-form" novalidate>
+                        <div class="form-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" class="form-control" id="login-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" class="form-control" id="login-password" required>
+                        </div>
+                        <div id="login-error" class="alert alert-danger d-none"></div>
+                        <button type="submit" class="btn btn-otl btn-block">LOGIN</button>
+                        <p class="auth-switch">No account yet? <a href="#" id="show-register">Register</a></p>
+                    </form>
+
+                    <form id="register-form" class="d-none" novalidate>
+                        <div class="form-group">
+                            <label for="reg-name">Full Name</label>
+                            <input type="text" class="form-control" id="reg-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-email">Email</label>
+                            <input type="email" class="form-control" id="reg-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-password">Password (min. 6 characters)</label>
+                            <input type="password" class="form-control" id="reg-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-confirm">Confirm Password</label>
+                            <input type="password" class="form-control" id="reg-confirm" required>
+                        </div>
+                        <div id="register-error" class="alert alert-danger d-none"></div>
+                        <button type="submit" class="btn btn-otl btn-block">CREATE ACCOUNT</button>
+                        <p class="auth-switch">Already have an account? <a href="#" id="show-login">Login</a></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <a href="../index.html" class="footer-logo"><img src="../img/logo3.png" alt="Own The Label"></a>
+                </div>
+                <div class="col-md-6 text-center">
+                    <p class="footer-tagline">Same Brand Never The Same Look</p>
+                </div>
+                <div class="col-md-3 text-right">
+                    <div class="social-icons">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
+                            <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6"><p class="copyright">© 2025 Own The Label Co.</p></div>
+                <div class="col-md-6 text-right"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/shared.js"></script>
+    <script src="login.js"></script>
+</body>
+
+</html>

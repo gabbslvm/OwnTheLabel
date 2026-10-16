@@ -1,9 +1,10 @@
 <?php
 require "connection.php";
+require "validate.php";
 header("Content-Type: application/json");
 
 $d = json_decode(file_get_contents("php://input"), true);
-$email = trim($d['email'] ?? '');
+$email = cleanEmail($d['email'] ?? '');
 $password = $d['password'] ?? '';
 
 if ($email === '' || $password === '') {
@@ -12,12 +13,23 @@ if ($email === '' || $password === '') {
     exit;
 }
 
-$stmt = $conn->prepare("SELECT id, name, password, role FROM users WHERE email = ?");
+if (!isValidEmail($email)) {
+    http_response_code(400);
+    echo json_encode(["error" => "Please enter a valid email address."]);
+    exit;
+}
+
+$stmt = $conn->prepare("SELECT id, name, password, role, status FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $u = $stmt->get_result()->fetch_assoc();
 
 if ($u && password_verify($password, $u['password'])) {
+    if ($u['status'] === 'disabled') {
+        http_response_code(403);
+        echo json_encode(["error" => "This account is disabled."]);
+        exit;
+    }
     session_regenerate_id(true);
     $_SESSION['user_id'] = $u['id'];
     $_SESSION['name'] = $u['name'];

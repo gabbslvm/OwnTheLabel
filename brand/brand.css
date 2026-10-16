@@ -56,7 +56,6 @@ main {
     padding: 80px 0;
 }
 
-/* Image boxes: the box sets the size, the photo fills it */
 .img-box {
     position: relative;
     width: 100%;
