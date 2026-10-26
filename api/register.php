@@ -4,11 +4,24 @@ require "validate.php";
 header("Content-Type: application/json");
 
 $d = json_decode(file_get_contents("php://input"), true);
-$name = trim($d['name'] ?? '');
-$email = cleanEmail($d['email'] ?? '');
-$password = $d['password'] ?? '';
 
-if ($name === '' || $email === '' || $password === '') {
+$name = '';
+if (isset($d['name'])) {
+    $name = trim($d['name']);
+}
+
+$email = '';
+if (isset($d['email'])) {
+    $email = $d['email'];
+}
+$email = cleanEmail($email);
+
+$password = '';
+if (isset($d['password'])) {
+    $password = $d['password'];
+}
+
+if ($name == '' || $email == '' || $password == '') {
     http_response_code(400);
     echo json_encode(["error" => "All fields are required."]);
     exit;
@@ -27,7 +40,8 @@ if (strlen($password) < 6) {
 $check = $conn->prepare("SELECT id FROM users WHERE email = ?");
 $check->bind_param("s", $email);
 $check->execute();
-if ($check->get_result()->num_rows > 0) {
+$checkResult = $check->get_result();
+if ($checkResult->num_rows > 0) {
     http_response_code(409);
     echo json_encode(["error" => "Email is already registered."]);
     exit;

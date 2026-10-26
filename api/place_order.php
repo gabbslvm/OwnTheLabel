@@ -2,33 +2,26 @@
 require "connection.php";
 require "validate.php";
 header("Content-Type: application/json");
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+$SHIPPING_FEE = 100;
+$FREE_SHIPPING_MIN = 2500;
 
-const SHIPPING_FEE = 100;
-const FREE_SHIPPING_MIN = 2500;
-const MAX_LINES = 30;
-const MAX_QTY = 20;
-
-class OrderError extends Exception {
-    public $status;
-    public function __construct($message, $status = 400) {
-        parent::__construct($message);
-        $this->status = $status;
-    }
-}
-
-function reply($status, $data) {
+function reply($status, $data)
+{
     http_response_code($status);
     echo json_encode($data);
     exit;
 }
 
-function text($d, $key) {
-    return isset($d[$key]) && is_string($d[$key]) ? trim($d[$key]) : '';
+function readText($d, $key)
+{
+    if (isset($d[$key]) && is_string($d[$key])) {
+        return trim($d[$key]);
+    }
+    return '';
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     reply(405, ["error" => "Method not allowed."]);
 }
 if (!isset($_SESSION['user_id'])) {
@@ -40,157 +33,180 @@ if (!is_array($d)) {
     reply(400, ["error" => "Invalid request."]);
 }
 
+$fullName = readText($d, 'full_name');
+$email    = cleanEmail(readText($d, 'email'));
+$phone    = readText($d, 'phone');
+$address  = readText($d, 'address');
+$city     = readText($d, 'city');
+$postal   = readText($d, 'postal');
+$payment  = readText($d, 'payment');
 
-$fullName = text($d, 'full_name');
-$email    = cleanEmail(text($d, 'email'));
-$phone    = text($d, 'phone');
-$address  = text($d, 'address');
-$city     = text($d, 'city');
-$postal   = text($d, 'postal');
-$payment  = text($d, 'payment');
+if (strlen($fullName) < 2 || strlen($fullName) > 100) {
+    reply(400, ["error" => "Please enter your full name."]);
+}
+if (!isValidEmail($email)) {
+    reply(400, ["error" => "Please enter a valid email."]);
+}
+if (strlen($phone) != 11 || substr($phone, 0, 2) != "09" || !ctype_digit($phone)) {
+    reply(400, ["error" => "Mobile number must be 09XXXXXXXXX."]);
+}
+if (strlen($address) < 5 || strlen($address) > 255) {
+    reply(400, ["error" => "Please enter your address."]);
+}
+if (strlen($city) < 2 || strlen($city) > 80) {
+    reply(400, ["error" => "Please enter your city."]);
+}
+if (strlen($postal) != 4 || !ctype_digit($postal)) {
+    reply(400, ["error" => "Postal code must be 4 digits."]);
+}
+if ($payment != 'cod' && $payment != 'gcash' && $payment != 'card') {
+    reply(400, ["error" => "Choose a payment method."]);
+}
 
-if (mb_strlen($fullName) < 2 || mb_strlen($fullName) > 100) reply(400, ["error" => "Please enter your full name."]);
-if (!isValidEmail($email))                                  reply(400, ["error" => "Please enter a valid email."]);
-if (!preg_match('/^09[0-9]{9}$/', $phone))                  reply(400, ["error" => "Mobile number must be 09XXXXXXXXX."]);
-if (mb_strlen($address) < 5 || mb_strlen($address) > 255)   reply(400, ["error" => "Please enter your address."]);
-if (mb_strlen($city) < 2 || mb_strlen($city) > 80)          reply(400, ["error" => "Please enter your city."]);
-if (!preg_match('/^[0-9]{4}$/', $postal))                   reply(400, ["error" => "Postal code must be 4 digits."]);
-if (!in_array($payment, ['cod', 'gcash', 'card'], true))    reply(400, ["error" => "Choose a payment method."]);
-
-
-$lines = [];
-$rawItems = $d['items'] ?? null;
-if (!is_array($rawItems) || !$rawItems) {
+if (!isset($d['items']) || !is_array($d['items']) || count($d['items']) == 0) {
     reply(400, ["error" => "Your cart is empty."]);
 }
-foreach ($rawItems as $it) {
-    $vid = (int)($it['variantId'] ?? 0);
-    $qty = (int)($it['qty'] ?? 0);
+
+$lines = [];
+foreach ($d['items'] as $it) {
+    $vid = 0;
+    $qty = 0;
+    if (isset($it['variantId'])) {
+        $vid = intval($it['variantId']);
+    }
+    if (isset($it['qty'])) {
+        $qty = intval($it['qty']);
+    }
+
     if ($vid < 1 || $qty < 1) {
         reply(400, ["error" => "Your cart has an invalid item."]);
     }
-    $lines[$vid] = ($lines[$vid] ?? 0) + $qty;
-}
-if (count($lines) > MAX_LINES) {
-    reply(400, ["error" => "Too many different items in one order."]);
-}
-foreach ($lines as $q) {
-    if ($q > MAX_QTY) {
-        reply(400, ["error" => "You can order up to " . MAX_QTY . " of the same item."]);
+
+    if (isset($lines[$vid])) {
+        $lines[$vid] = $lines[$vid] + $qty;
+    } else {
+        $lines[$vid] = $qty;
     }
 }
-ksort($lines); 
+foreach ($lines as $q) {
+    if ($q > 20) {
+        reply(400, ["error" => "You can order up to 20 of the same item."]);
+    }
+}
+ksort($lines);
 
 $userId = (int)$_SESSION['user_id'];
 
-try {
-    $conn->begin_transaction();
+$conn->begin_transaction();
 
-    $pick = $conn->prepare(
-        "SELECT v.id, v.size, v.color, v.stock, p.name, p.price, p.is_active
-         FROM product_variants v
-         JOIN products p ON p.id = v.product_id
-         WHERE v.id = ? FOR UPDATE"
-    );
-    $take = $conn->prepare("UPDATE product_variants SET stock = stock - ? WHERE id = ? AND stock >= ?");
+$items = [];
+$receiptItems = [];
+$subtotal = 0;
 
-    $items = [];
-    $subtotal = 0.0;
+foreach ($lines as $vid => $qty) {
+    $stmt = $conn->prepare("SELECT v.size, v.color, v.stock, p.name, p.price, p.is_active
+        FROM product_variants v
+        JOIN products p ON p.id = v.product_id
+        WHERE v.id = ? FOR UPDATE");
+    $stmt->bind_param("i", $vid);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
 
-    foreach ($lines as $vid => $qty) {
-        $pick->bind_param("i", $vid);
-        $pick->execute();
-        $row = $pick->get_result()->fetch_assoc();
-
-        if (!$row || !(int)$row['is_active']) {
-            throw new OrderError("An item in your cart is no longer available. Please remove it and try again.", 409);
-        }
-
-        $label = $row['name'] . " (" . $row['size'] . ", " . $row['color'] . ")";
-        $stock = (int)$row['stock'];
-        if ($stock < 1) {
-            throw new OrderError($label . " is sold out.", 409);
-        }
-        if ($stock < $qty) {
-            throw new OrderError("Only " . $stock . " left of " . $label . ".", 409);
-        }
-
-        $take->bind_param("iii", $qty, $vid, $qty);
-        $take->execute();
-        if ($take->affected_rows !== 1) {
-            throw new OrderError($label . " just sold out. Please review your cart.", 409);
-        }
-
-        $price = (float)$row['price'];
-        $subtotal += $price * $qty;
-        $items[] = [
-            "variant_id" => $vid,
-            "name"       => $row['name'],
-            "size"       => $row['size'],
-            "color"      => $row['color'],
-            "price"      => $price,
-            "qty"        => $qty
-        ];
+    if (!$row || $row['is_active'] == 0) {
+        $conn->rollback();
+        reply(409, ["error" => "An item in your cart is no longer available. Please remove it and try again."]);
     }
 
-    $subtotal = round($subtotal, 2);
-    $shipping = $subtotal >= FREE_SHIPPING_MIN ? 0.0 : (float)SHIPPING_FEE;
-    $total    = round($subtotal + $shipping, 2);
-    $orderNo  = "OTL-" . date("Ymd") . "-" . strtoupper(bin2hex(random_bytes(3)));
+    $label = $row['name'] . " (" . $row['size'] . ", " . $row['color'] . ")";
+    $stock = (int)$row['stock'];
 
-    $ins = $conn->prepare(
-        "INSERT INTO orders (order_no, user_id, full_name, email, phone, address, city, postal, payment_method, subtotal, shipping, total)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    );
-    $ins->bind_param("sisssssssddd", $orderNo, $userId, $fullName, $email, $phone, $address, $city, $postal, $payment, $subtotal, $shipping, $total);
-    $ins->execute();
-    $orderId = $conn->insert_id;
-
-    $lineIns = $conn->prepare(
-        "INSERT INTO order_items (order_id, variant_id, product_name, size, color, price, qty)
-         VALUES (?, ?, ?, ?, ?, ?, ?)"
-    );
-    foreach ($items as $it) {
-        $lineIns->bind_param("iisssdi", $orderId, $it['variant_id'], $it['name'], $it['size'], $it['color'], $it['price'], $it['qty']);
-        $lineIns->execute();
+    if ($stock < 1) {
+        $conn->rollback();
+        reply(409, ["error" => $label . " is sold out."]);
+    }
+    if ($stock < $qty) {
+        $conn->rollback();
+        reply(409, ["error" => "Only " . $stock . " left of " . $label . "."]);
     }
 
-    $info = $conn->prepare("SELECT status, created_at FROM orders WHERE id = ?");
-    $info->bind_param("i", $orderId);
-    $info->execute();
-    $meta = $info->get_result()->fetch_assoc();
+    $upd = $conn->prepare("UPDATE product_variants SET stock = stock - ? WHERE id = ?");
+    $upd->bind_param("ii", $qty, $vid);
+    $upd->execute();
 
-    $conn->commit();
+    $price = (float)$row['price'];
+    $subtotal = $subtotal + ($price * $qty);
 
-    reply(200, [
-        "ok" => true,
-        "order" => [
-            "order_no"       => $orderNo,
-            "status"         => $meta['status'],
-            "created_at"     => $meta['created_at'],
-            "payment_method" => $payment,
-            "customer"       => [
-                "full_name" => $fullName,
-                "email"     => $email,
-                "phone"     => $phone,
-                "address"   => $address,
-                "city"      => $city,
-                "postal"    => $postal
-            ],
-            "items"    => array_map(function ($i) {
-                unset($i['variant_id']);
-                return $i;
-            }, $items),
-            "subtotal" => $subtotal,
-            "shipping" => $shipping,
-            "total"    => $total
-        ]
-    ]);
-} catch (OrderError $e) {
+    $items[] = [
+        "variant_id" => $vid,
+        "name"  => $row['name'],
+        "size"  => $row['size'],
+        "color" => $row['color'],
+        "price" => $price,
+        "qty"   => $qty
+    ];
+    $receiptItems[] = [
+        "name"  => $row['name'],
+        "size"  => $row['size'],
+        "color" => $row['color'],
+        "price" => $price,
+        "qty"   => $qty
+    ];
+}
+
+$subtotal = round($subtotal, 2);
+if ($subtotal >= $FREE_SHIPPING_MIN) {
+    $shipping = 0;
+} else {
+    $shipping = $SHIPPING_FEE;
+}
+$total = round($subtotal + $shipping, 2);
+
+$orderNo = "OTL-" . date("Ymd") . "-" . strtoupper(substr(md5(uniqid()), 0, 6));
+
+$ins = $conn->prepare("INSERT INTO orders (order_no, user_id, full_name, email, phone, address, city, postal, payment_method, subtotal, shipping, total)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$ins->bind_param("sisssssssddd", $orderNo, $userId, $fullName, $email, $phone, $address, $city, $postal, $payment, $subtotal, $shipping, $total);
+if (!$ins->execute()) {
     $conn->rollback();
-    reply($e->status, ["error" => $e->getMessage()]);
-} catch (Throwable $e) {
-    $conn->rollback();
-    error_log("place_order failed: " . $e->getMessage());
     reply(500, ["error" => "Could not place your order. Please try again."]);
 }
+$orderId = $conn->insert_id;
+
+foreach ($items as $it) {
+    $lineIns = $conn->prepare("INSERT INTO order_items (order_id, variant_id, product_name, size, color, price, qty)
+        VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $lineIns->bind_param("iisssdi", $orderId, $it['variant_id'], $it['name'], $it['size'], $it['color'], $it['price'], $it['qty']);
+    if (!$lineIns->execute()) {
+        $conn->rollback();
+        reply(500, ["error" => "Could not place your order. Please try again."]);
+    }
+}
+
+$info = $conn->prepare("SELECT status, created_at FROM orders WHERE id = ?");
+$info->bind_param("i", $orderId);
+$info->execute();
+$meta = $info->get_result()->fetch_assoc();
+
+$conn->commit();
+
+reply(200, [
+    "ok" => true,
+    "order" => [
+        "order_no"       => $orderNo,
+        "status"         => $meta['status'],
+        "created_at"     => $meta['created_at'],
+        "payment_method" => $payment,
+        "customer" => [
+            "full_name" => $fullName,
+            "email"     => $email,
+            "phone"     => $phone,
+            "address"   => $address,
+            "city"      => $city,
+            "postal"    => $postal
+        ],
+        "items"    => $receiptItems,
+        "subtotal" => $subtotal,
+        "shipping" => $shipping,
+        "total"    => $total
+    ]
+]);
