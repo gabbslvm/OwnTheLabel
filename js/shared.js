@@ -30,6 +30,9 @@ function saveCart(cart) {
 }
 
 function sameItem(a, b) {
+    if (a.variantId && b.variantId) {
+        return String(a.variantId) === String(b.variantId);
+    }
     return (
         String(a.id) === String(b.id) &&
         a.size === b.size &&
@@ -114,12 +117,18 @@ fetch(SITE_ROOT + "api/session.php")
         esc(s.name) +
         ")</a></li>";
     } else {
+        var onLogin = /\/login\//.test(location.pathname);
         html =
-        '<li class="nav-item"><a class="nav-link" href="' +
+        '<li class="nav-item"><a class="nav-link' + (onLogin ? " active" : "") + '" href="' +
         SITE_ROOT +
         'login/login.html">Login</a></li>';
     }
-    nav.insertAdjacentHTML("beforeend", html);
+    var cartItem = nav.querySelector(".nav-cart");
+    if (cartItem) {
+        cartItem.insertAdjacentHTML("beforebegin", html);
+    } else {
+        nav.insertAdjacentHTML("beforeend", html);
+    }
 
     var out = document.getElementById("logout-link");
     if (out) {
@@ -143,7 +152,7 @@ $(loadAuthLinks);
     var style = document.createElement("style");
     style.textContent =
     ".otl-toast{position:fixed;top:90px;left:50%;transform:translate(-50%,-20px);" +
-    "background:#080808;color:#F7F7F5;padding:14px 28px;font-size:.9rem;letter-spacing:1px;" +
+    "background:#080808;color:#F7F7F5;padding:14px 28px;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;" +
     "z-index:2000;opacity:0;transition:.4s ease;box-shadow:0 10px 30px rgba(0,0,0,.25);}" +
     ".otl-toast.show{opacity:1;transform:translate(-50%,0);}";
     document.head.appendChild(style);

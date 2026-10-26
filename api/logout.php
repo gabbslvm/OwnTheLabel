@@ -1,8 +1,9 @@
 <?php
 require "connection.php";
-header("Content-Type: application/json");
 
 $_SESSION = [];
 session_destroy();
 
-echo json_encode(["ok" => true]);
+header_remove("Content-Type");
+header("Location: ../login/login.html", true, 303);
+exit;

@@ -3,14 +3,14 @@ $(function () {
         e.preventDefault();
         $("#login-form").addClass("d-none");
         $("#register-form").removeClass("d-none");
-        $("#auth-title").text("CREATE ACCOUNT");
+        $("#auth-title").text("Register");
     });
 
     $("#show-login").click(function (e) {
         e.preventDefault();
         $("#register-form").addClass("d-none");
         $("#login-form").removeClass("d-none");
-        $("#auth-title").text("LOGIN");
+        $("#auth-title").text("Login");
     });
 
     function showError(box, msg) {

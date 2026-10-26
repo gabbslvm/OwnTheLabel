@@ -1,12 +1,9 @@
 @font-face {
     font-family: 'Bernoru Expanded';
     src: url('fonts/bernoru-blackultraexpanded.otf') format('opentype');
+    font-display: swap;
 }
 
-@font-face {
-    font-family: 'Brice Semi Expanded';
-    src: url('fonts/your-brice-semi-expanded-file-name.otf') format('opentype');
-}
 
 :root {
     --otl-white: #F7F7F5;
@@ -14,6 +11,11 @@
     --concrete: #D9D9D6;
     --cool-gray: #8A8A87;
     --chrome: #B8B8B5;
+    --surface: #FFFFFF;
+    --placeholder: #EDEDEA;
+    --otl-red: #A53D35;
+    --font-display: 'Bernoru Expanded', 'Arial Black', sans-serif;
+    --font-body: 'Inter', sans-serif;
 }
 
 * {
@@ -25,9 +27,21 @@
 body {
     background: var(--otl-white);
     color: var(--otl-black);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     overflow-x: hidden;
     font-weight: 500;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--font-body);
+}
+
+a {
+    color: var(--otl-black);
+}
+
+a:hover {
+    color: var(--cool-gray);
 }
 
 a {
@@ -112,7 +126,7 @@ a {
 
 .otl-navbar .nav-title {
     color: var(--otl-black);
-    font-family: 'Bernoru Expanded', sans-serif;
+    font-family: var(--font-display);
     font-size: 1.4rem;
     font-weight: normal;
     -webkit-text-stroke: 4px #fff;
@@ -125,7 +139,7 @@ a {
 
 .otl-navbar .nav-title sup {
     -webkit-text-stroke: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.4em;
     font-weight: 600;
     top: -1em;
@@ -194,7 +208,7 @@ a {
     top: 50%;
     transform: translate(-50%, -50%) scale(1);
     transform-origin: center center;
-    font-family: 'Bernoru Expanded', sans-serif;
+    font-family: var(--font-display);
     font-size: 5rem;
     font-weight: normal;
     color: var(--otl-black);
@@ -208,7 +222,7 @@ a {
 
 .hero-title sup {
     -webkit-text-stroke: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.4em;
     font-weight: 600;
     top: -1em;
@@ -240,8 +254,8 @@ a {
 .brand-strip {
     overflow: hidden;
     padding: 14px 0;
-    background: #080808;
-    color: #ffffff;
+    background: var(--otl-black);
+    color: var(--surface);
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 1.5px;
@@ -282,7 +296,9 @@ a {
 }
 
 .section-title {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
+    font-weight: 800;
+    letter-spacing: 1px;
     color: var(--otl-black);
     text-transform: uppercase;
     margin-bottom: 1rem;
@@ -295,31 +311,105 @@ a {
 .btn-otl,
 .btn-outline-otl {
     padding: 12px 28px;
+    border-radius: 0;
+    font-size: .8rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     transition: .3s ease;
 }
 
 .btn-otl {
     background: var(--otl-black);
     color: var(--otl-white);
-    border: none;
-}
-
-.btn-otl:hover {
-    background: #222;
-    color: var(--otl-white);
-}
-
-.btn-outline-otl {
     border: 1px solid var(--otl-black);
+}
+
+.btn-otl:hover,
+.btn-otl:focus {
+    background: transparent;
+    color: var(--otl-black);
+    box-shadow: none;
+}
+
+.btn-otl:disabled,
+.btn-otl:disabled:hover {
+    background: var(--chrome);
+    border-color: var(--chrome);
+    color: var(--surface);
+    cursor: not-allowed;
+}
+
+.btn-outline-otl,
+.btn-outline-dark {
+    border: 1px solid var(--otl-black);
+    border-radius: 0;
     color: var(--otl-black);
     background: transparent;
 }
 
-.btn-outline-otl:hover {
+.btn-outline-otl:hover,
+.btn-outline-dark:hover {
     background: var(--otl-black);
+    border-color: var(--otl-black);
     color: var(--otl-white);
+}
+
+.btn-sm.btn-otl,
+.btn-sm.btn-outline-otl {
+    padding: 9px 16px;
+    font-size: .72rem;
+}
+
+/* ---------- Shared page elements (used by every inner page) ---------- */
+
+.page-title {
+    font-family: var(--font-display);
+    font-weight: normal;
+    font-size: 2.6rem;
+    line-height: 1.1;
+    letter-spacing: 1px;
+    color: var(--otl-black);
+    margin-bottom: 40px;
+}
+
+.form-control {
+    border-radius: 0;
+    border: 1px solid var(--concrete);
+    background: var(--surface);
+    color: var(--otl-black);
+}
+
+.form-control:focus {
+    border-color: var(--otl-black);
+    box-shadow: none;
+}
+
+label {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--otl-black);
+}
+
+.form-check-label {
+    font-size: .9rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.text-muted {
+    color: var(--cool-gray) !important;
+}
+
+.alert-danger {
+    background: var(--surface);
+    border: 1px solid var(--otl-red);
+    border-left-width: 4px;
+    border-radius: 0;
+    color: var(--otl-red);
 }
 
 .featured-collection .card {
@@ -452,8 +542,11 @@ a {
 
 .footer-tagline {
     color: var(--otl-white);
-    font-family: 'Inter', sans-serif;
-    font-size: 1.5rem;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     margin: 0;
 }
 
@@ -554,7 +647,7 @@ a {
     position: relative;
     padding-top: 125%;
     overflow: hidden;
-    background: #f2f2f2;
+    background: var(--placeholder);
 }
 
 .fc-img img {
@@ -692,7 +785,17 @@ a {
     }
 }
 
+@media (max-width: 991px) {
+    .page-title {
+        font-size: 2rem;
+    }
+}
+
 @media (max-width: 576px) {
+    .page-title {
+        font-size: 1.5rem;
+    }
+
     .hero-title {
         font-size: 2.2rem;
     }

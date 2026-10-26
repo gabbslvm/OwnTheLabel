@@ -18,7 +18,7 @@
                 <a class="navbar-brand logo order-xl-last" href="index.html">
                     <img src="img/logo2.png" alt="Own The Label">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -34,6 +34,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact/Contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item nav-cart">
+                            <a class="nav-link" href="checkout/checkout.html">Cart (<span class="cart-count">0</span>)</a>
                         </li>
                     </ul>
                 </div>
@@ -261,13 +264,11 @@
                     </a>
                 </div>
                 <div class="col-md-6 text-center">
-                    <p class="footer-tagline">
-                        Same Brand Never The Same Look
-                    </p>
+                    <p class="footer-tagline">Same Brand, Never The Same Look.</p>
                 </div>
                 <div class="col-md-3 text-right">
                     <div class="social-icons">
-                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram" target="_blank" rel="noopener">
                             <img src="img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
                         </a>
                     </div>
@@ -276,9 +277,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="copyright">
-                        © 2025 Own The Label Co.
-                    </p>
+                    <p class="copyright">© 2025 Own The Label Co.</p>
                 </div>
                 <div class="col-md-6 text-right">
                     <a href="#">Privacy Policy</a>
@@ -331,6 +330,7 @@
         animate();
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/shared.js"></script>
     <script>
         fetch("api/products.php")
@@ -362,7 +362,6 @@
                 $("#featured-grid").html('<p class="col-12 text-center text-muted">Could not load products.</p>');
             });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
