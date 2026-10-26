@@ -29,43 +29,30 @@ $users = $conn->query('SELECT id, name, email, role, status FROM users ORDER BY 
 admin_header('User Maintenance', 'users');
 ?>
 <section class="admin-panel">
-    <div class="admin-panel-heading">
-        <h2>Registered accounts</h2>
-    </div>
+    <div class="admin-panel-heading"><h2>Registered accounts</h2></div>
     <?php if ($users->num_rows): ?>
-        <div class="admin-table-wrap">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Account access</th>
-                    </tr>
-                </thead>
-                <tbody><?php while ($user = $users->fetch_assoc()): ?>
-                        <tr>
-                            <td><?= admin_escape($user['name']) ?><?= (int)$user['id'] === (int)$_SESSION['user_id'] ? ' <small>(you)</small>' : '' ?></td>
-                            <td><?= admin_escape($user['email']) ?></td>
-                            <td><span class="admin-badge"><?= admin_escape(ucfirst($user['role'])) ?></span></td>
-                            <td><span class="admin-badge <?= admin_status_class($user['status']) ?>"><?= admin_escape(ucfirst($user['status'])) ?></span></td>
-                            <td>
-                                <form class="admin-inline-form" method="post">
-                                    <?php admin_csrf_field(); ?>
-                                    <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
-                                    <select class="admin-select" name="status" aria-label="Status for <?= admin_escape($user['name']) ?>" <?= (int)$user['id'] === (int)$_SESSION['user_id'] ? 'disabled' : '' ?>>
-                                        <option value="active" <?= $user['status'] === 'active' ? 'selected' : '' ?>>Active</option>
-                                        <option value="disabled" <?= $user['status'] === 'disabled' ? 'selected' : '' ?>>Disabled</option>
-                                    </select>
-                                    <button class="admin-button" type="submit" <?= (int)$user['id'] === (int)$_SESSION['user_id'] ? 'disabled' : '' ?>>Save</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-        </div>
+        <div class="admin-table-wrap"><table class="admin-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Account access</th></tr></thead>
+            <tbody><?php while ($user = $users->fetch_assoc()): ?>
+                <tr>
+                    <td><?= admin_escape($user['name']) ?><?= (int)$user['id'] === (int)$_SESSION['user_id'] ? ' <small>(you)</small>' : '' ?></td>
+                    <td><?= admin_escape($user['email']) ?></td>
+                    <td><span class="admin-badge"><?= admin_escape(ucfirst($user['role'])) ?></span></td>
+                    <td><span class="admin-badge <?= admin_status_class($user['status']) ?>"><?= admin_escape(ucfirst($user['status'])) ?></span></td>
+                    <td>
+                        <form class="admin-inline-form" method="post">
+                            <?php admin_csrf_field(); ?>
+                            <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
+                            <select class="admin-select" name="status" aria-label="Status for <?= admin_escape($user['name']) ?>" <?= (int)$user['id'] === (int)$_SESSION['user_id'] ? 'disabled' : '' ?>>
+                                <option value="active" <?= $user['status'] === 'active' ? 'selected' : '' ?>>Active</option>
+                                <option value="disabled" <?= $user['status'] === 'disabled' ? 'selected' : '' ?>>Disabled</option>
+                            </select>
+                            <button class="admin-button" type="submit" <?= (int)$user['id'] === (int)$_SESSION['user_id'] ? 'disabled' : '' ?>>Save</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endwhile; ?></tbody>
+        </table></div>
     <?php else: ?>
         <div class="admin-empty">No accounts found.</div>
     <?php endif; ?>

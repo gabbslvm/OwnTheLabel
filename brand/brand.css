@@ -1,39 +1,44 @@
+body {
+    background: #e9e9e7;
+    color: #1a1a1a;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
 
 main {
     padding-top: 91px;
-    background: var(--otl-white);
 }
 
 .small-label {
     margin-bottom: 26px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 3px;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--cool-gray);
+    color: #5f5f5c;
 }
 
 .brand-title {
-    font-family: var(--font-display);
-    font-size: 3.4rem;
-    font-weight: normal;
-    line-height: 1.05;
-    letter-spacing: 1px;
+    font-family: 'Anton', sans-serif;
+    font-size: 4.5rem;
+    font-weight: 400;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .gray-line {
     display: block;
-    color: var(--cool-gray);
+    color: #7f7f7c;
 }
 
 .brand-heading {
     margin-bottom: 26px;
-    font-family: var(--font-body);
-    font-size: 2rem;
-    font-weight: 800;
-    line-height: 1.15;
+    font-family: 'Anton', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 400;
+    line-height: 1.1;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 .brand-text {
@@ -43,13 +48,8 @@ main {
     line-height: 1.75;
 }
 
-.brand-text,
-.brand-lead {
-    color: var(--otl-black);
-}
-
 .soft-text {
-    color: var(--cool-gray);
+    color: #5f5f5c;
 }
 
 .brand-section {
@@ -60,7 +60,7 @@ main {
     position: relative;
     width: 100%;
     overflow: hidden;
-    background: var(--placeholder);
+    background: #cfcfcc;
 }
 
 .img-box img {
@@ -116,16 +116,12 @@ main {
 
 #brand-make,
 #brand-project {
-    background: var(--concrete);
+    background: #d9d9d6;
 }
 
 #brand-people {
-    background: var(--otl-black);
-    color: var(--otl-white);
-}
-
-#brand-people .brand-text {
-    color: var(--otl-white);
+    background: #161616;
+    color: #ffffff;
 }
 
 #brand-people .small-label {
@@ -133,9 +129,9 @@ main {
 }
 
 .person-name {
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 2px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
 }
 
@@ -144,7 +140,7 @@ main {
     font-size: 0.72rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: var(--chrome);
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .person-text {
@@ -174,8 +170,8 @@ main {
 .team-name small {
     display: block;
     font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--chrome);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 #brand-cta {
@@ -193,7 +189,7 @@ main {
 }
 
 .cta-title {
-    font-size: 2.6rem;
+    font-size: 3rem;
 }
 
 .faint-star {
@@ -211,6 +207,23 @@ main {
     font-size: 0.9rem;
 }
 
+.brand-btn {
+    padding: 15px 34px;
+    background: #080808;
+    color: #ffffff;
+    border: 1px solid #080808;
+    border-radius: 0;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    transition: 0.3s ease;
+}
+
+.brand-btn:hover {
+    background: transparent;
+    color: #080808;
+}
+
 .brand-btn .arrow {
     margin-left: 8px;
 }
@@ -224,32 +237,31 @@ main {
 .chip {
     margin: 0 10px 10px 0;
     padding: 8px 18px;
-    border: 1px solid var(--otl-black);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 2px;
+    border: 1px solid #1a1a1a;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
     text-transform: uppercase;
     transition: 0.3s ease;
 }
 
 .chip:hover {
-    background: var(--otl-black);
-    color: var(--otl-white);
+    background: #1a1a1a;
+    color: #ffffff;
 }
 
 .value-item {
     height: 100%;
     padding-top: 22px;
-    border-top: 1px solid var(--otl-black);
+    border-top: 1px solid #9a9a97;
 }
 
 .value-title {
     margin-bottom: 12px;
-    font-family: var(--font-body);
-    font-size: 1.05rem;
-    font-weight: 800;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.5px;
 }
 
 @media (max-width: 991px) {
@@ -258,15 +270,15 @@ main {
     }
 
     .brand-title {
-        font-size: 2.6rem;
+        font-size: 3.2rem;
     }
 
     .cta-title {
-        font-size: 2rem;
+        font-size: 2.4rem;
     }
 
     .brand-heading {
-        font-size: 1.7rem;
+        font-size: 2rem;
     }
 
     .img-hero {
@@ -286,15 +298,15 @@ main {
 
 @media (max-width: 576px) {
     .brand-title {
-        font-size: 1.8rem;
+        font-size: 2.4rem;
     }
 
     .cta-title {
-        font-size: 1.5rem;
+        font-size: 1.9rem;
     }
 
     .brand-heading {
-        font-size: 1.4rem;
+        font-size: 1.7rem;
     }
 
     .img-hero {

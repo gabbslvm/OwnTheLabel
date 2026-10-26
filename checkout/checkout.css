@@ -8,45 +8,31 @@
 }
 
 .checkout-title {
+    font-weight: 800;
+    letter-spacing: 3px;
     margin-bottom: 50px;
 }
 
-.receipt-title {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-}
-
-.form-check {
-    margin-bottom: 8px;
-}
-
-.form-check-label {
-    color: var(--cool-gray);
-    cursor: pointer;
-}
-
-.form-check-input:checked + .form-check-label {
-    color: var(--otl-black);
-}
-
 .section-label {
-    font-size: .85rem;
+    font-size: .9rem;
     letter-spacing: 2px;
-    font-weight: 800;
-    text-transform: uppercase;
+    font-weight: 700;
     margin-bottom: 20px;
 }
 
-.pay-panel {
-    background: var(--surface);
+#checkout .form-control {
+    border-radius: 0;
     border: 1px solid var(--concrete);
+}
+
+.pay-panel {
+    background: #f7f7f7;
     padding: 20px;
     margin-top: 15px;
 }
 
 .order-summary {
-    background: var(--surface);
-    border: 1px solid var(--concrete);
+    background: #f7f7f7;
     padding: 30px;
     position: sticky;
     top: 110px;
@@ -62,7 +48,6 @@
     width: 70px;
     height: 85px;
     object-fit: cover;
-    background: var(--placeholder);
 }
 
 .summary-info {
@@ -86,8 +71,7 @@
     height: 24px;
     padding: 0;
     border: 1px solid var(--concrete);
-    background: var(--surface);
-    color: var(--otl-black);
+    background: #fff;
     line-height: 1;
 }
 
@@ -96,7 +80,7 @@
     padding: 0 8px;
     border: none;
     background: none;
-    color: var(--otl-red);
+    color: #c0392b;
     font-size: .8rem;
 }
 
@@ -116,7 +100,6 @@
     max-width: 650px;
     margin: 0 auto;
     padding: 40px;
-    background: var(--surface);
     border: 1px solid var(--concrete);
 }
 

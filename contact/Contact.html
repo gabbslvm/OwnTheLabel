@@ -20,7 +20,7 @@
                 <a class="navbar-brand logo order-xl-last" href="../index.html">
                     <img src="../img/logo2.png" alt="Own The Label">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -37,9 +37,6 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="../contact/Contact.html">Contact</a>
                         </li>
-                        <li class="nav-item nav-cart">
-                            <a class="nav-link" href="../checkout/checkout.html">Cart (<span class="cart-count">0</span>)</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -47,10 +44,10 @@
     </header>
 
     <main>
+        <h1 class="sr-only">Contact Own The Label</h1>
+
         <section class="container contact-section">
-            <p class="section-eyebrow">GET IN TOUCH</p>
-            <h1 class="page-title">Contact</h1>
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-lg-5 mb-4 mb-lg-0">
                     <div class="contact-info-card h-100">
                         <span class="eyebrow eyebrow-light">CONTACT INFO</span>
@@ -115,11 +112,11 @@
                             </li>
                         </ul>
 
-                        <div class="info-tagline">I OWN IT.</div>
+                        <div class="info-tagline">| I OWN IT.</div>
                     </div>
                 </div>
 
-                <div class="col-lg-7">
+                <div class="col-lg-6">
                     <div class="contact-form-card h-100">
                         <span class="eyebrow">MESSAGE</span>
                         <h2>Send us a message</h2>
@@ -129,7 +126,7 @@
                             ✓ Thanks! Your message has been sent.
                         </div>
 
-                        <form id="contact-form" novalidate>
+                        <form id="contact-form">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="first-name">FIRST NAME</label>
@@ -152,7 +149,7 @@
                                 <textarea id="message" class="form-control contact-input contact-textarea" rows="5"
                                     placeholder="How can we help?" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-otl btn-block contact-send-btn">
+                            <button type="submit" class="contact-send-btn">
                                 SEND MESSAGE <span class="arrow">→</span>
                             </button>
                         </form>
@@ -172,11 +169,13 @@
                     </a>
                 </div>
                 <div class="col-md-6 text-center">
-                    <p class="footer-tagline">Same Brand, Never The Same Look.</p>
+                    <p class="footer-tagline">
+                        Same Brand Never The Same Look
+                    </p>
                 </div>
                 <div class="col-md-3 text-right">
                     <div class="social-icons">
-                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram" target="_blank" rel="noopener">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
                             <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
                         </a>
                     </div>
@@ -185,7 +184,9 @@
             <hr>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="copyright">© 2025 Own The Label Co.</p>
+                    <p class="copyright">
+                        © 2025 Own The Label Co.
+                    </p>
                 </div>
                 <div class="col-md-6 text-right">
                     <a href="#">Privacy Policy</a>
@@ -196,9 +197,15 @@
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/shared.js"></script>
-    <script src="contact.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("contact-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            document.getElementById("form-success").classList.remove("d-none");
+            this.reset();
+        });
+    </script>
 </body>
 
 </html>

@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../shop/shop.css">
     <link rel="stylesheet" href="checkout.css">
 </head>
 
@@ -17,31 +18,10 @@
         <nav class="navbar navbar-expand-xl navbar-light otl-navbar is-scrolled" id="site-header">
             <div class="container-fluid px-3 px-xl-5">
                 <a class="navbar-brand nav-title d-none d-xl-block" href="../index.html">Own The Label<sup>TM</sup></a>
+                <a href="../shop/shop.html" class="btn btn-otl btn-sm">← Continue Shopping</a>
                 <a class="navbar-brand logo order-xl-last" href="../index.html">
                     <img src="../img/logo2.png" alt="Own The Label">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="../index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../shop/shop.html">Shop</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../brand/brand.html">Brand</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../contact/Contact.html">Contact</a>
-                        </li>
-                        <li class="nav-item nav-cart">
-                            <a class="nav-link active" href="../checkout/checkout.html">Cart (<span class="cart-count">0</span>)</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </nav>
     </header>
@@ -49,8 +29,7 @@
     <main>
         <section id="checkout">
             <div class="container">
-                <p class="section-eyebrow">YOUR CART</p>
-                <h1 class="page-title checkout-title">Checkout</h1>
+                <h1 class="h2 checkout-title">CHECKOUT</h1>
 
                 <div id="empty-cart" class="text-center d-none">
                     <p class="mb-4">Your cart is empty.</p>
@@ -175,8 +154,7 @@
                 <div id="receipt" class="d-none">
                     <div class="receipt-box">
                         <div class="text-center mb-4">
-                            <p class="section-eyebrow">THANK YOU</p>
-                            <h2 class="page-title receipt-title">Order Confirmed</h2>
+                            <h2 class="h3">ORDER CONFIRMED</h2>
                             <p class="text-muted mb-0">Thank you for shopping with Own The Label Co.</p>
                         </div>
                         <div class="summary-row"><span>Order No.</span><strong id="r-orderno"></strong></div>
@@ -193,7 +171,8 @@
                         <div class="summary-row total"><span>Total</span><span id="r-total"></span></div>
                         <div class="text-center mt-4 no-print">
                             <button class="btn btn-otl mr-2" onclick="window.print()">Print Receipt</button>
-                            <a href="../shop/shop.html" class="btn btn-outline-otl">Back to Shop</a>
+                            <a href="../shop/shop.html" class="btn btn-outline-dark" style="border-radius:0;">Back to
+                                Shop</a>
                         </div>
                     </div>
                 </div>
@@ -210,12 +189,15 @@
                     </a>
                 </div>
                 <div class="col-md-6 text-center">
-                    <p class="footer-tagline">Same Brand, Never The Same Look.</p>
+                    <p class="footer-tagline">
+                        Same Brand Never The Same Look
+                    </p>
                 </div>
                 <div class="col-md-3 text-right">
                     <div class="social-icons">
-                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram" target="_blank" rel="noopener">
-                            <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
+                            <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram"
+                                class="social-icon">
                         </a>
                     </div>
                 </div>
@@ -223,7 +205,9 @@
             <hr>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="copyright">© 2025 Own The Label Co.</p>
+                    <p class="copyright">
+                        © 2025 Own The Label Co.
+                    </p>
                 </div>
                 <div class="col-md-6 text-right">
                     <a href="#">Privacy Policy</a>

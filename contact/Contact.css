@@ -3,8 +3,8 @@
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 3px;
-    color: var(--cool-gray);
-    margin-bottom: 8px;
+    color: var(--cool-gray, #777);
+    margin-bottom: 12px;
 }
 
 .eyebrow-light {
@@ -13,20 +13,18 @@
 
 .contact-section {
     padding-top: 130px;
-    padding-bottom: 80px;
+    padding-bottom: 90px;
 }
 
 .contact-info-card h2,
 .contact-form-card h2 {
-    font-size: 1.6rem;
+    font-size: 1.9rem;
     font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
     margin-bottom: 10px;
 }
 
 .info-intro {
-    color: var(--cool-gray);
+    color: var(--cool-gray, #777);
     margin-bottom: 30px;
 }
 
@@ -36,10 +34,15 @@
     display: flex;
     flex-direction: column;
     padding: 45px 40px;
-    background: var(--otl-black);
-    color: var(--otl-white);
-    border-radius: 0;
+    background: var(--otl-black, #0d0d0d);
+    color: #fff;
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
     transition: transform 0.3s ease;
+}
+
+.contact-info-card:hover {
+    transform: translateY(-6px);
 }
 
 .contact-info-card::after {
@@ -78,7 +81,7 @@
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 0;
+    border-radius: 14px;
     transition: 0.3s ease;
 }
 
@@ -88,8 +91,8 @@
 }
 
 .info-list li:hover .icon-box {
-    background: var(--otl-white);
-    color: var(--otl-black);
+    background: #fff;
+    color: #000;
 }
 
 .info-list small {
@@ -102,12 +105,11 @@
 
 .info-list a,
 .info-list span {
-    color: var(--otl-white);
+    color: #fff;
     text-decoration: none;
 }
 
 .info-list a:hover {
-    color: var(--otl-white);
     text-decoration: underline;
 }
 
@@ -123,32 +125,33 @@
 
 .contact-form-card {
     padding: 45px 40px;
-    background: var(--surface);
-    border: 1px solid var(--concrete);
-    border-radius: 0;
+    background: #fff;
+    border: 1px solid var(--concrete, #e5e5e5);
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
 }
 
 .contact-form-card label {
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 2px;
-    color: var(--otl-black);
+    color: var(--otl-black, #000);
     margin-bottom: 8px;
 }
 
 .contact-input {
     height: 52px;
     padding: 0 16px;
-    background: var(--otl-white);
-    border: 1px solid var(--concrete);
-    border-radius: 0;
+    background: #f7f7f5;
+    border: 1px solid var(--concrete, #d9d9d9);
+    border-radius: 12px;
     transition: 0.25s ease;
 }
 
 .contact-input:focus {
-    background: var(--surface);
-    border-color: var(--otl-black);
-    box-shadow: none;
+    background: #fff;
+    border-color: var(--otl-black, #000);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
 }
 
 .contact-textarea {
@@ -162,13 +165,11 @@
     width: 100%;
     height: 54px;
     margin-top: 10px;
-    background: var(--otl-black);
-    color: var(--otl-white);
-    border: 1px solid var(--otl-black);
-    border-radius: 0;
-    font-size: .8rem;
-    font-weight: 700;
-    text-transform: uppercase;
+    background: var(--otl-black, #000);
+    color: #fff;
+    border: 1px solid var(--otl-black, #000);
+    border-radius: 12px;
+    font-weight: 600;
     letter-spacing: 2px;
     cursor: pointer;
     transition: 0.3s ease;
@@ -176,7 +177,8 @@
 
 .contact-send-btn:hover {
     background: transparent;
-    color: var(--otl-black);
+    color: var(--otl-black, #000);
+    transform: translateY(-2px);
 }
 
 .contact-send-btn .arrow {
@@ -190,10 +192,10 @@
 }
 
 .contact-alert {
-    background: var(--otl-white);
-    border: 1px solid var(--concrete);
-    border-radius: 0;
-    color: var(--otl-black);
+    background: #f1f1ef;
+    border: 1px solid var(--concrete, #d9d9d9);
+    border-radius: 12px;
+    color: var(--otl-black, #000);
 }
 
 @media (max-width: 991px) {
