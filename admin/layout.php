@@ -49,56 +49,63 @@ function admin_header($title, $active)
 	];
 	$flash = $_SESSION['admin_flash'] ?? null;
 	unset($_SESSION['admin_flash']);
-	?>
+?>
 	<!DOCTYPE html>
 	<html lang="en">
+
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title><?= admin_escape($title) ?> | OTL Admin</title>
 		<link rel="stylesheet" href="admin.css">
 	</head>
+
 	<body>
-	<div class="admin-shell">
-		<header class="admin-topbar">
-			<a class="admin-brand" href="dashboard.php"><img src="../img/logo2.png" alt="Own The Label"><span>ADMIN</span></a>
-			<div class="admin-topbar-meta">
-				<span><?= admin_escape($_SESSION['name'] ?? 'Admin') ?></span>
-				<a href="../index.html">Store</a>
-				<a href="../api/logout.php">Log out</a>
-			</div>
-		</header>
-		<nav class="admin-nav" aria-label="Admin navigation">
-			<?php foreach ($links as $key => [$label, $href]): ?>
-				<a href="<?= admin_escape($href) ?>" <?= $active === $key ? 'aria-current="page"' : '' ?>><?= admin_escape($label) ?></a>
-			<?php endforeach; ?>
-		</nav>
-		<main class="admin-main">
-			<?php if ($flash): ?>
-				<div class="admin-flash <?= admin_escape($flash['type']) ?>" role="status"><?= admin_escape($flash['message']) ?></div>
-			<?php endif; ?>
-			<div class="admin-page-heading"><div><h1><?= admin_escape($title) ?></h1></div></div>
-	<?php
-}
+		<div class="admin-shell">
+			<header class="admin-topbar">
+				<a class="admin-brand" href="dashboard.php"><img src="../img/logo2.png" alt="Own The Label"><span>ADMIN</span></a>
+				<div class="admin-topbar-meta">
+					<span><?= admin_escape($_SESSION['name'] ?? 'Admin') ?></span>
+					<a href="../index.html">Store</a>
+					<a href="../api/logout.php">Log out</a>
+				</div>
+			</header>
+			<nav class="admin-nav" aria-label="Admin navigation">
+				<?php foreach ($links as $key => [$label, $href]): ?>
+					<a href="<?= admin_escape($href) ?>" <?= $active === $key ? 'aria-current="page"' : '' ?>><?= admin_escape($label) ?></a>
+				<?php endforeach; ?>
+			</nav>
+			<main class="admin-main">
+				<?php if ($flash): ?>
+					<div class="admin-flash <?= admin_escape($flash['type']) ?>" role="status"><?= admin_escape($flash['message']) ?></div>
+				<?php endif; ?>
+				<div class="admin-page-heading">
+					<div>
+						<h1><?= admin_escape($title) ?></h1>
+					</div>
+				</div>
+			<?php
+		}
 
-function admin_footer()
-{
-	?>
-			<footer class="admin-footer">OTL Store Administration</footer>
-		</main>
-	</div>
+		function admin_footer()
+		{
+			?>
+				<footer class="admin-footer">OTL Store Administration</footer>
+			</main>
+		</div>
 	</body>
+
 	</html>
-	<?php
-}
+<?php
+		}
 
-function admin_money($amount)
-{
-	return 'PHP ' . number_format((float)$amount, 2);
-}
+		function admin_money($amount)
+		{
+			return 'PHP ' . number_format((float)$amount, 2);
+		}
 
-function admin_status_class($status)
-{
-	return strtolower((string)$status);
-}
+		function admin_status_class($status)
+		{
+			return strtolower((string)$status);
+		}
 ?>

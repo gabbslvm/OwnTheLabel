@@ -30,7 +30,7 @@ while ($row = $res->fetch_assoc()) {
 }
 
 if ($orders) {
-    $ids = implode(",", array_keys($orders)); 
+    $ids = implode(",", array_keys($orders));
     $items = $conn->query(
         "SELECT order_id, product_name, size, color, price, qty
         FROM order_items WHERE order_id IN ($ids) ORDER BY id"

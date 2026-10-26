@@ -10,21 +10,25 @@ const FREE_SHIPPING_MIN = 2500;
 const MAX_LINES = 30;
 const MAX_QTY = 20;
 
-class OrderError extends Exception {
+class OrderError extends Exception
+{
     public $status;
-    public function __construct($message, $status = 400) {
+    public function __construct($message, $status = 400)
+    {
         parent::__construct($message);
         $this->status = $status;
     }
 }
 
-function reply($status, $data) {
+function reply($status, $data)
+{
     http_response_code($status);
     echo json_encode($data);
     exit;
 }
 
-function text($d, $key) {
+function text($d, $key)
+{
     return isset($d[$key]) && is_string($d[$key]) ? trim($d[$key]) : '';
 }
 
@@ -79,7 +83,7 @@ foreach ($lines as $q) {
         reply(400, ["error" => "You can order up to " . MAX_QTY . " of the same item."]);
     }
 }
-ksort($lines); 
+ksort($lines);
 
 $userId = (int)$_SESSION['user_id'];
 
@@ -88,9 +92,9 @@ try {
 
     $pick = $conn->prepare(
         "SELECT v.id, v.size, v.color, v.stock, p.name, p.price, p.is_active
-         FROM product_variants v
-         JOIN products p ON p.id = v.product_id
-         WHERE v.id = ? FOR UPDATE"
+            FROM product_variants v
+            JOIN products p ON p.id = v.product_id
+            WHERE v.id = ? FOR UPDATE"
     );
     $take = $conn->prepare("UPDATE product_variants SET stock = stock - ? WHERE id = ? AND stock >= ?");
 

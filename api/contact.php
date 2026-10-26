@@ -3,11 +3,13 @@ require "connection.php";
 require "validate.php";
 header("Content-Type: application/json");
 
-function text($d, $key) {
+function text($d, $key)
+{
     return isset($d[$key]) && is_string($d[$key]) ? trim($d[$key]) : '';
 }
 
-function fail($status, $msg) {
+function fail($status, $msg)
+{
     http_response_code($status);
     echo json_encode(["error" => $msg]);
     exit;

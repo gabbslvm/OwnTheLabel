@@ -17,20 +17,33 @@ admin_header('Dashboard', 'dashboard');
     <article class="admin-stat"><span class="admin-stat-label">Completed sales</span><strong class="admin-stat-value"><?= admin_money($stats['revenue']) ?></strong></article>
 </section>
 <section class="admin-panel">
-    <div class="admin-panel-heading"><h2>Recent orders</h2></div>
+    <div class="admin-panel-heading">
+        <h2>Recent orders</h2>
+    </div>
     <?php if ($recentOrders->num_rows): ?>
-        <div class="admin-table-wrap"><table class="admin-table">
-            <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th><th>Placed</th></tr></thead>
-            <tbody><?php while ($order = $recentOrders->fetch_assoc()): ?>
-                <tr>
-                    <td>#<?= admin_escape($order['order_no']) ?></td>
-                    <td><?= admin_escape($order['full_name'] ?: 'Customer') ?></td>
-                    <td><?= admin_money($order['total']) ?></td>
-                    <td><span class="admin-badge <?= admin_status_class($order['status']) ?>"><?= admin_escape($order['status']) ?></span></td>
-                    <td><?= admin_escape(date('M j, Y', strtotime($order['created_at']))) ?></td>
-                </tr>
-            <?php endwhile; ?></tbody>
-        </table></div>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Placed</th>
+                    </tr>
+                </thead>
+                <tbody><?php while ($order = $recentOrders->fetch_assoc()): ?>
+                        <tr>
+                            <td>#<?= admin_escape($order['order_no']) ?></td>
+                            <td><?= admin_escape($order['full_name'] ?: 'Customer') ?></td>
+                            <td><?= admin_money($order['total']) ?></td>
+                            <td><span class="admin-badge <?= admin_status_class($order['status']) ?>"><?= admin_escape($order['status']) ?></span></td>
+                            <td><?= admin_escape(date('M j, Y', strtotime($order['created_at']))) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     <?php else: ?>
         <div class="admin-empty">No orders have been placed yet.</div>
     <?php endif; ?>
