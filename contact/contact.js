@@ -63,6 +63,12 @@ $(function () {
         $("#order-group").toggleClass("d-none", this.value !== "Order Cancellation");
     });
 
+    var cancelNo = new URLSearchParams(location.search).get("cancel");
+    if (cancelNo) {
+        $("#topic").val("Order Cancellation").change();
+        $("#order-no").val(cancelNo);
+    }
+
     $form.submit(function (e) {
         e.preventDefault();
         $success.addClass("d-none");

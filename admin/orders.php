@@ -1,5 +1,6 @@
 <?php
 require "layout.php";
+require "../api/order_rules.php";
 
 $statuses = ['Pending', 'Processing', 'Completed', 'Cancelled'];
 
@@ -18,11 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		admin_redirect('orders.php');
 	}
 
-	$stmt = $conn->prepare('UPDATE orders SET status = ? WHERE id = ?');
-	$stmt->bind_param('si', $status, $orderId);
-	$stmt->execute();
+	// Enforces the allowed status flow and restocks items on cancel (see api/order_rules.php)
+	$error = order_change_status($conn, $orderId, $status);
+	if ($error != '') {
+		admin_flash($error, 'error');
+		admin_redirect('orders.php');
+	}
 
-	admin_flash('Order status updated.');
+	if ($status == 'Cancelled') {
+		admin_flash('Order cancelled. Its items were returned to stock.');
+	} else {
+		admin_flash('Order status updated.');
+	}
 	admin_redirect('orders.php');
 }
 
@@ -107,16 +115,24 @@ admin_header('Order Management', 'orders');
 							</td>
 							<td>
 								<span class="admin-badge <?php echo admin_status_class($order['status']); ?>"><?php echo admin_escape($order['status']); ?></span>
-								<form method="post" class="admin-inline-form" style="margin-top:8px">
-									<?php admin_csrf_field(); ?>
-									<input type="hidden" name="order_id" value="<?php echo (int)$order['id']; ?>">
-									<select class="admin-select" name="status">
-										<?php foreach ($statuses as $s) { ?>
-											<option value="<?php echo admin_escape($s); ?>" <?php if ($order['status'] == $s) { echo 'selected'; } ?>><?php echo admin_escape($s); ?></option>
-										<?php } ?>
-									</select>
-									<button class="admin-button" type="submit">Update</button>
-								</form>
+								<?php $nextStatuses = order_next_statuses($order['status']); ?>
+								<?php if (count($nextStatuses) > 0) { ?>
+									<form method="post" class="admin-inline-form" style="margin-top:8px"<?php if (in_array('Cancelled', $nextStatuses)) { ?> onsubmit="return this.status.value !== 'Cancelled' || confirm('Cancel this order? Its items will be returned to stock. This cannot be undone.');"<?php } ?>>
+										<?php admin_csrf_field(); ?>
+										<input type="hidden" name="order_id" value="<?php echo (int)$order['id']; ?>">
+										<select class="admin-select" name="status">
+											<?php foreach ($nextStatuses as $s) { ?>
+												<option value="<?php echo admin_escape($s); ?>"><?php echo admin_escape($s); ?></option>
+											<?php } ?>
+										</select>
+										<button class="admin-button" type="submit">Update</button>
+									</form>
+									<?php if ($order['status'] == 'Processing') { ?>
+										<small class="admin-muted">Being processed: can no longer be cancelled.</small>
+									<?php } ?>
+								<?php } else { ?>
+									<br><small class="admin-muted">Locked: <?php echo $order['status'] == 'Completed' ? 'transaction completed.' : 'order cancelled.'; ?></small>
+								<?php } ?>
 							</td>
 						</tr>
 					<?php } ?>

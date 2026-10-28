@@ -337,7 +337,6 @@
             .then(function (res) { return res.json(); })
             .then(function (products) {
 
-                // FEATURED: first 4 products marked is_featured
                 var featured = products.filter(function (p) { return p.is_featured === 1; }).slice(0, 4);
 
                 $("#featured-grid").html(featured.map(function (p) {
@@ -348,10 +347,11 @@
                         '<span class="fc-cat">' + esc(p.category) + '</span>' +
                         '<h3>' + esc(p.name) + '</h3>' +
                         '<p class="fc-price">' + formatPeso(p.price) + '</p>' +
-                        '</div></a></div>';
+                        '</div></a>' +
+                        ratingHtml(p) +
+                        '</div>';
                 }).join(""));
 
-                // CATEGORY COUNTS
                 $(".cat-count").each(function () {
                     var cat = $(this).data("cat");
                     var total = products.filter(function (p) { return p.category === cat; }).length;

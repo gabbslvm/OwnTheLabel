@@ -25,6 +25,7 @@ while ($row = $res->fetch_assoc()) {
     $row['subtotal'] = (float)$row['subtotal'];
     $row['shipping'] = (float)$row['shipping'];
     $row['total'] = (float)$row['total'];
+    $row['can_cancel'] = ($row['status'] == 'Pending');
     $row['items'] = [];
     $orders[$row['id']] = $row;
 }

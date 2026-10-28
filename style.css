@@ -361,7 +361,6 @@ a {
     font-size: .72rem;
 }
 
-/* ---------- Shared page elements (used by every inner page) ---------- */
 
 .page-title {
     font-family: var(--font-display);
@@ -839,7 +838,6 @@ label {
     }
 }
 
-/* ---------- Responsive footer ---------- */
 #footer .footer-logo img {
     max-width: 100%;
 }
@@ -912,7 +910,6 @@ label {
     }
 }
 
-/* ---------- "View Collection" button on small screens ---------- */
 @media (max-width: 991px) {
     #collectible .col-lg-4 {
         margin-bottom: 36px;
@@ -925,4 +922,60 @@ label {
         width: 100%;
         text-align: center;
     }
+}
+
+.otl-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 0 8px;
+}
+
+.otl-rate-dots {
+    display: inline-flex;
+    gap: 5px;
+}
+
+.otl-rate-dot {
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    border: 1.5px solid var(--otl-black);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color .15s ease, transform .15s ease;
+}
+
+.otl-rate-dot.is-filled {
+    background: var(--otl-black);
+}
+
+.otl-rate-dot:hover {
+    transform: scale(1.15);
+}
+
+.otl-rate-dot:focus {
+    outline: none;
+}
+
+.otl-rate-dot:focus-visible {
+    outline: 2px solid var(--cool-gray);
+    outline-offset: 2px;
+}
+
+.otl-rating.is-previewing .otl-rate-dot.is-filled {
+    background: var(--cool-gray);
+    border-color: var(--cool-gray);
+}
+
+.otl-rating.is-saving .otl-rate-dot {
+    cursor: wait;
+}
+
+.otl-rate-summary {
+    font-size: .7rem;
+    letter-spacing: .5px;
+    color: var(--cool-gray);
+    white-space: nowrap;
 }

@@ -251,7 +251,6 @@ $(function () {
 
     render();
 
-        // ---------- Order history + invoice re-view ----------
     var historyOrders = [];
 
     function toReceipt(o) {
@@ -301,7 +300,12 @@ $(function () {
                         "<td>" + count + (count === 1 ? " item" : " items") + "</td>" +
                         "<td>" + formatPeso(o.total) + "</td>" +
                         '<td><span class="order-status status-' + esc(o.status.toLowerCase()) + '">' + esc(o.status) + "</span></td>" +
-                        '<td class="text-right"><button type="button" class="btn btn-outline-otl btn-sm view-invoice" data-index="' + i + '">View Invoice</button></td>' +
+                        '<td class="text-right order-actions">' +
+                        '<button type="button" class="btn btn-outline-otl btn-sm view-invoice" data-index="' + i + '">View Invoice</button>' +
+                        (o.can_cancel
+                            ? ' <a class="btn btn-outline-otl btn-sm cancel-order" href="../contact/Contact.html?cancel=' + encodeURIComponent(o.order_no) + '#contact-form">Request Cancel</a>'
+                            : "") +
+                        "</td>" +
                         "</tr>";
                 }).join("");
 

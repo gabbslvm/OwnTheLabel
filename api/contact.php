@@ -1,6 +1,7 @@
 <?php
 require "connection.php";
 require "validate.php";
+require "order_rules.php";
 header("Content-Type: application/json");
 
 $TOPICS = ["General Inquiry", "Order Cancellation", "Feedback"];
@@ -25,7 +26,6 @@ if (isset($_SESSION['user_id'])) {
     $uid = (int)$_SESSION['user_id'];
 }
 
-// GET = the logged-in user's own message history
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if ($uid === null) {
         fail(401, "Please log in to view your messages.");
@@ -78,11 +78,24 @@ if ($topic == 'Order Cancellation') {
     if ($orderNo == '') {
         fail(400, "Please enter your order number.");
     }
-    $chk = $conn->prepare("SELECT id FROM orders WHERE order_no = ? AND user_id = ?");
+    $chk = $conn->prepare("SELECT id, status FROM orders WHERE order_no = ? AND user_id = ?");
     $chk->bind_param("si", $orderNo, $uid);
     $chk->execute();
-    if ($chk->get_result()->num_rows == 0) {
+    $order = $chk->get_result()->fetch_assoc();
+    if (!$order) {
         fail(400, "We couldn't find that order number on your account.");
+    }
+
+    if (!order_can_cancel($order['status'])) {
+        fail(409, order_cancel_block_reason($order['status']));
+    }
+
+    $dup = $conn->prepare("SELECT id FROM messages
+        WHERE topic = 'Order Cancellation' AND order_no = ? AND user_id = ? AND status = 'Pending'");
+    $dup->bind_param("si", $orderNo, $uid);
+    $dup->execute();
+    if ($dup->get_result()->num_rows > 0) {
+        fail(409, "You already sent a cancellation request for this order. Please wait for our reply.");
     }
 } else {
     $orderNo = '';

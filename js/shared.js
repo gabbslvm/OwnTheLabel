@@ -180,3 +180,89 @@ $(function () {
     showToast(msg);
     }
 });
+
+/* ---------- Product rating (1 to 5 circles) ----------
+   ratingHtml(product) builds the circles for any product card.
+   Click a circle to rate; hover previews the rating.
+   Filled black circles = your rating. Small text = average + count. */
+
+function ratingSummary(avg, count) {
+    if (!count) return "No ratings yet";
+    return Number(avg).toFixed(1) + " (" + count + ")";
+}
+
+function ratingHtml(p) {
+    var mine = Number(p.my_rating) || 0;
+    var circles = "";
+    for (var i = 1; i <= 5; i++) {
+        circles += '<button type="button" class="otl-rate-dot' + (i <= mine ? " is-filled" : "") + '"' +
+            ' data-value="' + i + '" role="radio" aria-checked="' + (i === mine) + '"' +
+            ' aria-label="Rate ' + i + " out of 5\"></button>";
+    }
+    return '<div class="otl-rating" data-product-id="' + p.id + '" data-rating="' + mine + '">' +
+        '<div class="otl-rate-dots" role="radiogroup" aria-label="Rate ' + esc(p.name) + '">' + circles + "</div>" +
+        '<span class="otl-rate-summary">' + ratingSummary(p.avg_rating, p.rating_count) + "</span>" +
+        "</div>";
+}
+
+function paintRating($box, value) {
+    $box.find(".otl-rate-dot").each(function () {
+        var v = Number($(this).data("value"));
+        $(this).toggleClass("is-filled", v <= value).attr("aria-checked", v === value);
+    });
+}
+
+$(document).on("mouseenter", ".otl-rate-dot", function () {
+    var $box = $(this).closest(".otl-rating");
+    var value = Number($(this).data("value"));
+    $box.toggleClass("is-previewing", value !== Number($box.attr("data-rating")));
+    paintRating($box, value);
+});
+
+$(document).on("mouseleave", ".otl-rate-dots", function () {
+    var $box = $(this).closest(".otl-rating");
+    $box.removeClass("is-previewing");
+    paintRating($box, Number($box.attr("data-rating")));
+});
+
+$(document).on("click", ".otl-rate-dot", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var $dot = $(this);
+    var $box = $dot.closest(".otl-rating");
+    if ($box.hasClass("is-saving")) return;
+
+    var value = Number($dot.data("value"));
+    var previous = Number($box.attr("data-rating"));
+
+    $box.removeClass("is-previewing").addClass("is-saving").attr("data-rating", value);
+    paintRating($box, value);
+
+    fetch(SITE_ROOT + "api/rate.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product_id: Number($box.data("product-id")), rating: value })
+    })
+        .then(function (res) {
+            return res.json().then(function (data) { return { status: res.status, data: data }; });
+        })
+        .then(function (r) {
+            if (r.status !== 200) {
+                $box.attr("data-rating", previous);
+                paintRating($box, previous);
+                showToast(r.data.error || "Could not save your rating.");
+                return;
+            }
+            $box.find(".otl-rate-summary").text(ratingSummary(r.data.avg_rating, r.data.rating_count));
+            showToast("Thanks! You rated this " + value + "/5.");
+        })
+        .catch(function () {
+            $box.attr("data-rating", previous);
+            paintRating($box, previous);
+            showToast("Could not save your rating.");
+        })
+        .then(function () {
+            $box.removeClass("is-saving");
+        });
+});

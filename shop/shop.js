@@ -79,6 +79,7 @@ $(function () {
             '<span class="product-cat">' + esc(p.category) + "</span>" +
             "<h3>" + esc(p.name) + "</h3>" +
             '<p class="product-price">' + formatPeso(p.price) + "</p>" +
+            ratingHtml(p) +
             '<div class="product-options">' +
             '<select class="form-control form-control-sm size-select">' + sizeOpts + "</select>" +
             colorHtml +

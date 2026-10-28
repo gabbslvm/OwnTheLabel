@@ -51,8 +51,11 @@ $counts = $conn->query("SELECT COUNT(*) AS total,
     SUM(topic = 'Order Cancellation') AS cancel
     FROM messages")->fetch_assoc();
 
-$res = $conn->query("SELECT id, first_name, last_name, email, topic, order_no, message, status, reply, replied_at, created_at
-    FROM messages $where ORDER BY created_at DESC, id DESC");
+$res = $conn->query("SELECT m.id, m.first_name, m.last_name, m.email, m.topic, m.order_no, m.message, m.status, m.reply, m.replied_at, m.created_at,
+        o.status AS order_status
+    FROM (SELECT * FROM messages $where) m
+    LEFT JOIN orders o ON o.order_no = m.order_no AND m.order_no <> ''
+    ORDER BY m.created_at DESC, m.id DESC");
 
 $rows = [];
 while ($row = $res->fetch_assoc()) {
@@ -105,6 +108,9 @@ admin_header('Customer Messages', 'messages');
                                 <span class="admin-badge <?php if ($isCancel) { echo 'disabled'; } ?>"><?php echo admin_escape($m['topic']); ?></span>
                                 <?php if ($m['order_no'] != '') { ?>
                                     <br><small>Order: <?php echo admin_escape($m['order_no']); ?></small>
+                                    <?php if ($isCancel && $m['order_status'] != '') { ?>
+                                        <br><span class="admin-badge <?php echo admin_status_class($m['order_status']); ?>">Order is <?php echo admin_escape($m['order_status']); ?></span>
+                                    <?php } ?>
                                 <?php } ?>
                             </td>
                             <td class="admin-msg"><?php echo admin_escape($m['message']); ?></td>
@@ -119,7 +125,11 @@ admin_header('Customer Messages', 'messages');
                                     <input type="hidden" name="filter" value="<?php echo admin_escape($filter); ?>">
                                     <?php if ($isCancel) { ?>
                                         <div class="admin-actions" style="margin-bottom:8px">
-                                            <button type="button" class="admin-button" data-tpl="approve">Approve</button>
+                                            <?php if ($m['order_status'] == 'Pending') { ?>
+                                                <button type="button" class="admin-button" data-tpl="approve">Approve</button>
+                                            <?php } elseif ($m['order_status'] == 'Processing') { ?>
+                                                <button type="button" class="admin-button" data-tpl="processing">Already processing</button>
+                                            <?php } ?>
                                             <button type="button" class="admin-button" data-tpl="denied">Already shipped</button>
                                             <button type="button" class="admin-button" data-tpl="details">Ask details</button>
                                         </div>
@@ -138,9 +148,12 @@ admin_header('Customer Messages', 'messages');
     <?php } ?>
 </section>
 
+<p class="admin-muted" style="margin-top:12px"><small>To approve a cancellation, set the order to <strong>Cancelled</strong> on the Orders page (only possible while it is Pending). Its items go back to stock automatically.</small></p>
+
 <script>
     var TEMPLATES = {
         approve: "Hi! Your cancellation request has been approved. Your order is now cancelled and any payment made will be refunded within 3-5 business days. Thank you for shopping with Own The Label.",
+        processing: "Hi! Unfortunately we can't cancel this order anymore because it is already being processed. Thank you for understanding.",
         denied: "Hi! Unfortunately we can't cancel this order anymore because it has already been shipped. You may refuse the parcel on delivery or contact us again for a return. Thank you for understanding.",
         details: "Hi! Could you please send us your order number and the email you used at checkout so we can look into your request? Thank you."
     };
