@@ -106,7 +106,7 @@ fetch(SITE_ROOT + "api/session.php")
     .then(function (s) {
     var html = "";
     if (s.loggedIn) {
-        if (s.role === "admin") {
+        if (s.role !== "admin") {
         html +=
             '<li class="nav-item"><a class="nav-link" href="' + SITE_ROOT + 'checkout/checkout.html#order-history">My Orders</a></li>';
         }
