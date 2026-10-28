@@ -150,14 +150,18 @@ $(function () {
         $("#pay-error").text(msg).removeClass("d-none");
     }
 
-    function showReceipt(o) {
-        clearCart();
+        function formatWhen(value) {
+        var when = new Date(String(value).replace(" ", "T"));
+        return isNaN(when) ? value : when.toLocaleString("en-PH", { dateStyle: "medium", timeStyle: "short" });
+    }
 
-        var when = new Date(String(o.created_at).replace(" ", "T"));
+    function showReceipt(o, isReprint) {
+        if (!isReprint) clearCart();
+
         var c = o.customer;
 
         $("#r-orderno").text(o.order_no);
-        $("#r-date").text(isNaN(when) ? o.created_at : when.toLocaleString("en-PH", { dateStyle: "medium", timeStyle: "short" }));
+        $("#r-date").text(formatWhen(o.created_at));
         $("#r-status").text(o.status);
         $("#r-payment").text(PAYMENT_LABELS[o.payment_method] || o.payment_method);
 
@@ -179,6 +183,7 @@ $(function () {
 
         $("#checkout-content").addClass("d-none");
         $("#empty-cart").addClass("d-none");
+        $("#order-history").addClass("d-none");
         $("#receipt").removeClass("d-none");
         $("html, body").animate({ scrollTop: 0 }, 200);
     }
@@ -245,6 +250,83 @@ $(function () {
     });
 
     render();
+
+        // ---------- Order history + invoice re-view ----------
+    var historyOrders = [];
+
+    function toReceipt(o) {
+        return {
+            order_no: o.order_no,
+            status: o.status,
+            created_at: o.created_at,
+            payment_method: o.payment_method,
+            customer: {
+                full_name: o.full_name,
+                email: o.email,
+                phone: o.phone,
+                address: o.address,
+                city: o.city,
+                postal: o.postal
+            },
+            items: o.items,
+            subtotal: o.subtotal,
+            shipping: o.shipping,
+            total: o.total
+        };
+    }
+
+    function loadHistory() {
+        fetch("../api/my_orders.php")
+            .then(function (res) {
+                return res.json().then(function (body) { return { ok: res.ok, status: res.status, body: body }; });
+            })
+            .then(function (r) {
+                if (r.status === 401) {
+                    $("#order-history-list").html('<p class="text-muted">Log in to see your past orders. <a href="../login/login.html"><u>Login</u></a></p>');
+                    return;
+                }
+                if (!r.ok) throw new Error();
+
+                historyOrders = r.body;
+                if (!historyOrders.length) {
+                    $("#order-history-list").html('<p class="text-muted">You have no orders yet.</p>');
+                    return;
+                }
+
+                var rows = historyOrders.map(function (o, i) {
+                    var count = o.items.reduce(function (sum, it) { return sum + it.qty; }, 0);
+                    return "<tr>" +
+                        "<td><strong>" + esc(o.order_no) + "</strong></td>" +
+                        "<td>" + esc(formatWhen(o.created_at)) + "</td>" +
+                        "<td>" + count + (count === 1 ? " item" : " items") + "</td>" +
+                        "<td>" + formatPeso(o.total) + "</td>" +
+                        '<td><span class="order-status status-' + esc(o.status.toLowerCase()) + '">' + esc(o.status) + "</span></td>" +
+                        '<td class="text-right"><button type="button" class="btn btn-outline-otl btn-sm view-invoice" data-index="' + i + '">View Invoice</button></td>' +
+                        "</tr>";
+                }).join("");
+
+                $("#order-history-list").html(
+                    '<div class="table-responsive"><table class="table order-table"><thead><tr>' +
+                    "<th>Order No.</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th></th>" +
+                    "</tr></thead><tbody>" + rows + "</tbody></table></div>"
+                );
+            })
+            .catch(function () {
+                $("#order-history-list").html('<p class="text-muted">Could not load your orders. Is XAMPP running?</p>');
+            });
+    }
+
+    $("#order-history-list").on("click", ".view-invoice", function () {
+        var o = historyOrders[Number($(this).data("index"))];
+        if (o) showReceipt(toReceipt(o), true);
+    });
+
+    $("#back-to-orders").click(function () {
+        location.hash = "order-history";
+        location.reload();
+    });
+
+    loadHistory();
 
     fetch("../api/session.php")
         .then(function (res) { return res.json(); })

@@ -1,16 +1,79 @@
 <?php
 require "layout.php";
 
-$res = $conn->query("SELECT id, first_name, last_name, email, message, created_at
-    FROM messages ORDER BY created_at DESC, id DESC");
+$filters = ['all', 'pending', 'replied', 'cancel'];
+$filter = 'all';
+$requested = '';
+if (isset($_POST['filter'])) {
+    $requested = $_POST['filter'];
+} elseif (isset($_GET['filter'])) {
+    $requested = $_GET['filter'];
+}
+if (in_array($requested, $filters)) {
+    $filter = $requested;
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    if (!admin_check_csrf()) {
+        http_response_code(400);
+        exit('Invalid request token. Refresh and try again.');
+    }
+
+    $messageId = post_int('message_id');
+    $reply = post_text('reply');
+
+    if ($messageId < 1 || $reply == '' || strlen($reply) > 2000) {
+        admin_flash('Write a reply (up to 2000 characters).', 'error');
+        admin_redirect('messages.php?filter=' . $filter);
+    }
+
+    $stmt = $conn->prepare("UPDATE messages SET reply = ?, status = 'Replied', replied_at = NOW() WHERE id = ?");
+    $stmt->bind_param('si', $reply, $messageId);
+    $stmt->execute();
+
+    admin_flash('Reply saved. The customer can now see it on the Contact page.');
+    admin_redirect('messages.php?filter=' . $filter);
+}
+
+$where = '';
+if ($filter == 'pending') {
+    $where = "WHERE status = 'Pending'";
+} elseif ($filter == 'replied') {
+    $where = "WHERE status = 'Replied'";
+} elseif ($filter == 'cancel') {
+    $where = "WHERE topic = 'Order Cancellation'";
+}
+
+$counts = $conn->query("SELECT COUNT(*) AS total,
+    SUM(status = 'Pending') AS pending,
+    SUM(status = 'Replied') AS replied,
+    SUM(topic = 'Order Cancellation') AS cancel
+    FROM messages")->fetch_assoc();
+
+$res = $conn->query("SELECT id, first_name, last_name, email, topic, order_no, message, status, reply, replied_at, created_at
+    FROM messages $where ORDER BY created_at DESC, id DESC");
 
 $rows = [];
 while ($row = $res->fetch_assoc()) {
     $rows[] = $row;
 }
 
+$tabs = [
+    'all'     => ['All', (int)$counts['total']],
+    'pending' => ['Pending', (int)$counts['pending']],
+    'replied' => ['Replied', (int)$counts['replied']],
+    'cancel'  => ['Cancellation', (int)$counts['cancel']],
+];
+
 admin_header('Customer Messages', 'messages');
 ?>
+<div class="admin-actions" style="margin-bottom:18px">
+    <?php foreach ($tabs as $key => $tab) { ?>
+        <a class="admin-button <?php if ($filter == $key) { echo 'primary'; } ?>" href="messages.php?filter=<?php echo $key; ?>"><?php echo admin_escape($tab[0]); ?> (<?php echo $tab[1]; ?>)</a>
+    <?php } ?>
+</div>
+
 <section class="admin-panel">
     <div class="admin-panel-heading">
         <h2>Inbox (<?php echo count($rows); ?>)</h2>
@@ -21,9 +84,9 @@ admin_header('Customer Messages', 'messages');
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Name</th>
-                        <th>Email</th>
+                        <th>From</th>
                         <th>Message</th>
+                        <th>Reply</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,19 +94,61 @@ admin_header('Customer Messages', 'messages');
                         $fullName = $m['first_name'] . " " . $m['last_name'];
                         $date = date("M j, Y g:i A", strtotime($m['created_at']));
                         $mailLink = "mailto:" . $m['email'] . "?subject=" . rawurlencode("Re: your message to Own The Label");
+                        $replied = ($m['status'] == 'Replied');
+                        $isCancel = ($m['topic'] == 'Order Cancellation');
                     ?>
                         <tr>
                             <td class="admin-nowrap"><?php echo admin_escape($date); ?></td>
-                            <td><?php echo admin_escape($fullName); ?></td>
-                            <td><a href="<?php echo admin_escape($mailLink); ?>"><?php echo admin_escape($m['email']); ?></a></td>
+                            <td>
+                                <?php echo admin_escape($fullName); ?><br>
+                                <a href="<?php echo admin_escape($mailLink); ?>"><small><?php echo admin_escape($m['email']); ?></small></a><br>
+                                <span class="admin-badge <?php if ($isCancel) { echo 'disabled'; } ?>"><?php echo admin_escape($m['topic']); ?></span>
+                                <?php if ($m['order_no'] != '') { ?>
+                                    <br><small>Order: <?php echo admin_escape($m['order_no']); ?></small>
+                                <?php } ?>
+                            </td>
                             <td class="admin-msg"><?php echo admin_escape($m['message']); ?></td>
+                            <td class="admin-reply-cell">
+                                <span class="admin-badge <?php echo $replied ? 'active' : 'pending'; ?>"><?php echo admin_escape($m['status']); ?></span>
+                                <?php if ($replied) { ?>
+                                    <small class="admin-muted"> · <?php echo admin_escape(date("M j, Y g:i A", strtotime($m['replied_at']))); ?></small>
+                                <?php } ?>
+                                <form method="post" style="margin-top:8px">
+                                    <?php admin_csrf_field(); ?>
+                                    <input type="hidden" name="message_id" value="<?php echo (int)$m['id']; ?>">
+                                    <input type="hidden" name="filter" value="<?php echo admin_escape($filter); ?>">
+                                    <?php if ($isCancel) { ?>
+                                        <div class="admin-actions" style="margin-bottom:8px">
+                                            <button type="button" class="admin-button" data-tpl="approve">Approve</button>
+                                            <button type="button" class="admin-button" data-tpl="denied">Already shipped</button>
+                                            <button type="button" class="admin-button" data-tpl="details">Ask details</button>
+                                        </div>
+                                    <?php } ?>
+                                    <textarea class="admin-input admin-textarea" name="reply" rows="3" maxlength="2000" placeholder="Write your reply..." required><?php echo admin_escape($m['reply']); ?></textarea>
+                                    <button class="admin-button primary" type="submit" style="margin-top:8px"><?php echo $replied ? 'Update reply' : 'Send reply'; ?></button>
+                                </form>
+                            </td>
                         </tr>
                     <?php } ?>
                 </tbody>
             </table>
         </div>
     <?php } else { ?>
-        <div class="admin-empty">No messages yet.</div>
+        <div class="admin-empty">No messages to show.</div>
     <?php } ?>
 </section>
+
+<script>
+    var TEMPLATES = {
+        approve: "Hi! Your cancellation request has been approved. Your order is now cancelled and any payment made will be refunded within 3-5 business days. Thank you for shopping with Own The Label.",
+        denied: "Hi! Unfortunately we can't cancel this order anymore because it has already been shipped. You may refuse the parcel on delivery or contact us again for a return. Thank you for understanding.",
+        details: "Hi! Could you please send us your order number and the email you used at checkout so we can look into your request? Thank you."
+    };
+
+    document.querySelectorAll('[data-tpl]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            btn.closest('form').querySelector('textarea').value = TEMPLATES[btn.dataset.tpl];
+        });
+    });
+</script>
 <?php admin_footer(); ?>

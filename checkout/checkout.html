@@ -20,7 +20,8 @@
                 <a class="navbar-brand logo order-xl-last" href="../index.html">
                     <img src="../img/logo2.png" alt="Own The Label">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -38,7 +39,8 @@
                             <a class="nav-link" href="../contact/Contact.html">Contact</a>
                         </li>
                         <li class="nav-item nav-cart">
-                            <a class="nav-link active" href="../checkout/checkout.html">Cart (<span class="cart-count">0</span>)</a>
+                            <a class="nav-link active" href="../checkout/checkout.html">Cart (<span
+                                    class="cart-count">0</span>)</a>
                         </li>
                     </ul>
                 </div>
@@ -192,8 +194,17 @@
                         <div class="summary-row"><span>Shipping</span><span id="r-shipping"></span></div>
                         <div class="summary-row total"><span>Total</span><span id="r-total"></span></div>
                         <div class="text-center mt-4 no-print">
-                            <button class="btn btn-otl mr-2" onclick="window.print()">Print Receipt</button>
-                            <a href="../shop/shop.html" class="btn btn-outline-otl">Back to Shop</a>
+                            <button class="btn btn-otl mr-2 mb-2" onclick="window.print()">Print Receipt</button>
+                            <button type="button" id="back-to-orders" class="btn btn-outline-otl mr-2 mb-2">My
+                                Orders</button>
+                            <a href="../shop/shop.html" class="btn btn-outline-otl mb-2">Back to Shop</a>
+                        </div>
+                        <div id="order-history" class="mt-5 pt-4">
+                            <p class="section-eyebrow">TRANSACTIONS</p>
+                            <h2 class="page-title order-history-title">Order History</h2>
+                            <div id="order-history-list">
+                                <p class="text-muted">Loading your orders...</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -214,8 +225,10 @@
                 </div>
                 <div class="col-md-3 text-right">
                     <div class="social-icons">
-                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram" target="_blank" rel="noopener">
-                            <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram" target="_blank"
+                            rel="noopener">
+                            <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram"
+                                class="social-icon">
                         </a>
                     </div>
                 </div>

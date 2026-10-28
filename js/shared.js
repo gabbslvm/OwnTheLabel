@@ -108,9 +108,7 @@ fetch(SITE_ROOT + "api/session.php")
     if (s.loggedIn) {
         if (s.role === "admin") {
         html +=
-            '<li class="nav-item"><a class="nav-link" href="' +
-            SITE_ROOT +
-            'admin/dashboard.php">Admin</a></li>';
+            '<li class="nav-item"><a class="nav-link" href="' + SITE_ROOT + 'checkout/checkout.html#order-history">My Orders</a></li>';
         }
         html +=
         '<li class="nav-item"><a class="nav-link" href="#" id="logout-link">Logout (' +

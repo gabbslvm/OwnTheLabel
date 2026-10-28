@@ -512,3 +512,26 @@ select {
 		padding: 15px;
 	}
 }
+
+.admin-nowrap {
+	white-space: nowrap;
+}
+
+.admin-msg {
+	min-width: 240px;
+	white-space: pre-wrap;
+}
+
+.admin-reply-cell {
+	min-width: 320px;
+}
+
+.admin-textarea {
+	min-height: 80px;
+	resize: vertical;
+}
+
+.admin-badge.replied {
+	background: #e7e7e4;
+	color: #080808;
+}

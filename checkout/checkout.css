@@ -25,7 +25,7 @@
     cursor: pointer;
 }
 
-.form-check-input:checked + .form-check-label {
+.form-check-input:checked+.form-check-label {
     color: var(--otl-black);
 }
 
@@ -121,18 +121,109 @@
 }
 
 @media print {
+    @page {
+        margin: 15mm;
+    }
+
+    body {
+        background: #fff !important;
+        color: #000;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
     header,
     footer,
     .no-print,
-    .checkout-title {
+    .checkout-title,
+    #checkout>.container>.section-eyebrow,
+    #order-history,
+    .otl-toast {
         display: none !important;
     }
 
     #checkout {
         padding: 0;
+        background: #fff;
+    }
+
+    #checkout .container {
+        max-width: 100%;
+        padding: 0;
     }
 
     .receipt-box {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
         border: none;
     }
+
+    .receipt-title {
+        font-size: 1.6rem;
+    }
+
+    .summary-row,
+    #r-customer {
+        page-break-inside: avoid;
+    }
+
+    .text-muted {
+        color: #555 !important;
+    }
+}
+
+.order-history-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.order-table {
+    margin-bottom: 0;
+    background: var(--surface);
+    border: 1px solid var(--concrete);
+}
+
+.order-table th {
+    border-top: 0;
+    font-size: .7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cool-gray);
+    white-space: nowrap;
+}
+
+.order-table td {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.order-status {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--placeholder);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background: #fff4d6;
+    color: #8a6100;
+}
+
+.status-processing {
+    background: #e8eef9;
+    color: #2c4a8a;
+}
+
+.status-completed {
+    background: #e3f5e8;
+    color: #1d7a3a;
+}
+
+.status-cancelled {
+    background: #fdecea;
+    color: var(--otl-red);
 }
