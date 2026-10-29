@@ -65,7 +65,8 @@ $(function () {
 
     var cancelNo = new URLSearchParams(location.search).get("cancel");
     if (cancelNo) {
-        $("#topic").val("Order Cancellation").change();
+        $("#topic option[value='Order Cancellation']").prop("selected", true);
+        $("#topic").trigger("change");
         $("#order-no").val(cancelNo);
     }
 
