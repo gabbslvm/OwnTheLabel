@@ -1,44 +1,39 @@
-body {
-    background: #e9e9e7;
-    color: #1a1a1a;
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
-}
 
 main {
     padding-top: 91px;
+    background: var(--otl-white);
 }
 
 .small-label {
     margin-bottom: 26px;
-    font-size: 0.72rem;
-    letter-spacing: 1.5px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    color: #5f5f5c;
+    color: var(--cool-gray);
 }
 
 .brand-title {
-    font-family: 'Anton', sans-serif;
-    font-size: 4.5rem;
-    font-weight: 400;
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-family: var(--font-display);
+    font-size: 3.4rem;
+    font-weight: normal;
+    line-height: 1.05;
+    letter-spacing: 1px;
 }
 
 .gray-line {
     display: block;
-    color: #7f7f7c;
+    color: var(--cool-gray);
 }
 
 .brand-heading {
     margin-bottom: 26px;
-    font-family: 'Anton', sans-serif;
-    font-size: 2.4rem;
-    font-weight: 400;
-    line-height: 1.1;
+    font-family: var(--font-body);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.15;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
 .brand-text {
@@ -48,20 +43,24 @@ main {
     line-height: 1.75;
 }
 
+.brand-text,
+.brand-lead {
+    color: var(--otl-black);
+}
+
 .soft-text {
-    color: #5f5f5c;
+    color: var(--cool-gray);
 }
 
 .brand-section {
     padding: 80px 0;
 }
 
-/* Image boxes: the box sets the size, the photo fills it */
 .img-box {
     position: relative;
     width: 100%;
     overflow: hidden;
-    background: #cfcfcc;
+    background: var(--placeholder);
 }
 
 .img-box img {
@@ -117,12 +116,16 @@ main {
 
 #brand-make,
 #brand-project {
-    background: #d9d9d6;
+    background: var(--concrete);
 }
 
 #brand-people {
-    background: #161616;
-    color: #ffffff;
+    background: var(--otl-black);
+    color: var(--otl-white);
+}
+
+#brand-people .brand-text {
+    color: var(--otl-white);
 }
 
 #brand-people .small-label {
@@ -130,9 +133,9 @@ main {
 }
 
 .person-name {
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 1.5px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 2px;
     text-transform: uppercase;
 }
 
@@ -141,7 +144,7 @@ main {
     font-size: 0.72rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--chrome);
 }
 
 .person-text {
@@ -171,8 +174,8 @@ main {
 .team-name small {
     display: block;
     font-size: 0.72rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    color: var(--chrome);
 }
 
 #brand-cta {
@@ -190,7 +193,7 @@ main {
 }
 
 .cta-title {
-    font-size: 3rem;
+    font-size: 2.6rem;
 }
 
 .faint-star {
@@ -208,23 +211,6 @@ main {
     font-size: 0.9rem;
 }
 
-.brand-btn {
-    padding: 15px 34px;
-    background: #080808;
-    color: #ffffff;
-    border: 1px solid #080808;
-    border-radius: 0;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 1.5px;
-    transition: 0.3s ease;
-}
-
-.brand-btn:hover {
-    background: transparent;
-    color: #080808;
-}
-
 .brand-btn .arrow {
     margin-left: 8px;
 }
@@ -238,31 +224,32 @@ main {
 .chip {
     margin: 0 10px 10px 0;
     padding: 8px 18px;
-    border: 1px solid #1a1a1a;
-    font-size: 0.72rem;
-    letter-spacing: 1px;
+    border: 1px solid var(--otl-black);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
     transition: 0.3s ease;
 }
 
 .chip:hover {
-    background: #1a1a1a;
-    color: #ffffff;
+    background: var(--otl-black);
+    color: var(--otl-white);
 }
 
 .value-item {
     height: 100%;
     padding-top: 22px;
-    border-top: 1px solid #9a9a97;
+    border-top: 1px solid var(--otl-black);
 }
 
 .value-title {
     margin-bottom: 12px;
-    font-family: 'Anton', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 400;
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1.5px;
 }
 
 @media (max-width: 991px) {
@@ -271,15 +258,15 @@ main {
     }
 
     .brand-title {
-        font-size: 3.2rem;
+        font-size: 2.6rem;
     }
 
     .cta-title {
-        font-size: 2.4rem;
+        font-size: 2rem;
     }
 
     .brand-heading {
-        font-size: 2rem;
+        font-size: 1.7rem;
     }
 
     .img-hero {
@@ -299,15 +286,15 @@ main {
 
 @media (max-width: 576px) {
     .brand-title {
-        font-size: 2.4rem;
+        font-size: 1.8rem;
     }
 
     .cta-title {
-        font-size: 1.9rem;
+        font-size: 1.5rem;
     }
 
     .brand-heading {
-        font-size: 1.7rem;
+        font-size: 1.4rem;
     }
 
     .img-hero {

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brand | Own The Label Co.</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="brand.css">
@@ -20,7 +20,7 @@
                 <a class="navbar-brand logo order-xl-last" href="../index.html">
                     <img src="../img/logo2.png" alt="Own The Label">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -36,6 +36,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../contact/Contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item nav-cart">
+                            <a class="nav-link" href="../checkout/checkout.html">Cart (<span class="cart-count">0</span>)</a>
                         </li>
                     </ul>
                 </div>
@@ -232,7 +235,7 @@
         </section>
 
         <section id="brand-cta">
-            <img src="../img/logo-star.png" alt="" class="faint-star">
+            <img src="../img/logo2.png" alt="" class="faint-star">
             <div class="container text-center">
                 <p class="small-label">07 — THE JOURNEY CONTINUES</p>
                 <h2 class="brand-title cta-title">
@@ -240,7 +243,7 @@
                     <span class="gray-line">Never the same look.</span>
                 </h2>
                 <p class="cta-sub">I Own It.</p>
-                <a href="../shop/shop.html" class="btn brand-btn">EXPLORE THE COLLECTION <span class="arrow">→</span></a>
+                <a href="../shop/shop.html" class="btn btn-otl brand-btn">EXPLORE THE COLLECTION <span class="arrow">→</span></a>
             </div>
         </section>
     </main>
@@ -254,13 +257,11 @@
                     </a>
                 </div>
                 <div class="col-md-6 text-center">
-                    <p class="footer-tagline">
-                        Same Brand Never The Same Look
-                    </p>
+                    <p class="footer-tagline">Same Brand, Never The Same Look.</p>
                 </div>
                 <div class="col-md-3 text-right">
                     <div class="social-icons">
-                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram" target="_blank" rel="noopener">
                             <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
                         </a>
                     </div>
@@ -269,9 +270,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="copyright">
-                        © 2025 Own The Label Co.
-                    </p>
+                    <p class="copyright">© 2025 Own The Label Co.</p>
                 </div>
                 <div class="col-md-6 text-right">
                     <a href="#">Privacy Policy</a>
@@ -281,8 +280,9 @@
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/shared.js"></script>
 </body>
 
 </html>

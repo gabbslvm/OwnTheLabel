@@ -4,22 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Checkout | Own The Label Co.</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="shop.css">
     <link rel="stylesheet" href="checkout.css">
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light otl-navbar is-scrolled">
-            <div class="container-fluid px-5">
+        <nav class="navbar navbar-expand-xl navbar-light otl-navbar is-scrolled" id="site-header">
+            <div class="container-fluid px-3 px-xl-5">
                 <a class="navbar-brand nav-title d-none d-xl-block" href="../index.html">Own The Label<sup>TM</sup></a>
-                <a class="navbar-brand logo" href="../index.html"><img src="../img/logo2.png" alt="Own The Label"></a>
-                <a href="shop/shop.html" class="btn btn-otl btn-sm">← Continue Shopping</a>
+                <a class="navbar-brand logo order-xl-last" href="../index.html">
+                    <img src="../img/logo2.png" alt="Own The Label">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../shop/shop.html">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../brand/brand.html">Brand</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../contact/Contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item nav-cart">
+                            <a class="nav-link active" href="../checkout/checkout.html">Cart (<span
+                                    class="cart-count">0</span>)</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -27,11 +51,12 @@
     <main>
         <section id="checkout">
             <div class="container">
-                <h1 class="h2 checkout-title">CHECKOUT</h1>
+                <p class="section-eyebrow">YOUR CART</p>
+                <h1 class="page-title checkout-title">Checkout</h1>
 
                 <div id="empty-cart" class="text-center d-none">
                     <p class="mb-4">Your cart is empty.</p>
-                    <a href="shop/shop.html" class="btn btn-otl">Go to Shop</a>
+                    <a href="../shop/shop.html" class="btn btn-otl">Go to Shop</a>
                 </div>
 
                 <div class="row" id="checkout-content">
@@ -58,7 +83,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="House/Unit, Street, Barangay" required>
+                                <input type="text" class="form-control" id="address"
+                                    placeholder="House/Unit, Street, Barangay" required>
                                 <div class="invalid-feedback">Please enter your address.</div>
                             </div>
                             <div class="form-row">
@@ -76,15 +102,18 @@
 
                             <h2 class="h5 section-label mt-5">PAYMENT METHOD</h2>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-cod" value="cod" checked>
+                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-cod"
+                                    value="cod" checked>
                                 <label class="form-check-label" for="pay-radio-cod">Cash on Delivery</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-gcash" value="gcash">
+                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-gcash"
+                                    value="gcash">
                                 <label class="form-check-label" for="pay-radio-gcash">GCash</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-card" value="card">
+                                <input class="form-check-input" type="radio" name="payment" id="pay-radio-card"
+                                    value="card">
                                 <label class="form-check-label" for="pay-radio-card">Credit / Debit Card</label>
                             </div>
 
@@ -148,7 +177,8 @@
                 <div id="receipt" class="d-none">
                     <div class="receipt-box">
                         <div class="text-center mb-4">
-                            <h2 class="h3">ORDER CONFIRMED</h2>
+                            <p class="section-eyebrow">THANK YOU</p>
+                            <h2 class="page-title receipt-title">Order Confirmed</h2>
                             <p class="text-muted mb-0">Thank you for shopping with Own The Label Co.</p>
                         </div>
                         <div class="summary-row"><span>Order No.</span><strong id="r-orderno"></strong></div>
@@ -164,9 +194,18 @@
                         <div class="summary-row"><span>Shipping</span><span id="r-shipping"></span></div>
                         <div class="summary-row total"><span>Total</span><span id="r-total"></span></div>
                         <div class="text-center mt-4 no-print">
-                            <button class="btn btn-otl mr-2" onclick="window.print()">Print Receipt</button>
-                            <a href="shop.html" class="btn btn-outline-dark" style="border-radius:0;">Back to Shop</a>
+                            <button class="btn btn-otl mr-2 mb-2" onclick="window.print()">Print Receipt</button>
+                            <button type="button" id="back-to-orders" class="btn btn-outline-otl mr-2 mb-2">My
+                                Orders</button>
+                            <a href="../shop/shop.html" class="btn btn-outline-otl mb-2">Back to Shop</a>
                         </div>
+                    </div>
+                </div>
+                <div id="order-history" class="mt-5 pt-4">
+                        <p class="section-eyebrow">TRANSACTIONS</p>
+                        <h2 class="page-title order-history-title">Order History</h2>
+                        <div id="order-history-list">
+                            <p class="text-muted">Loading your orders...</p>
                     </div>
                 </div>
             </div>
@@ -178,18 +217,18 @@
             <div class="row align-items-center">
                 <div class="col-md-3">
                     <a href="../index.html" class="footer-logo">
-                        <img src="img/logo3.png" alt="Own The Label">
+                        <img src="../img/logo3.png" alt="Own The Label">
                     </a>
                 </div>
                 <div class="col-md-6 text-center">
-                    <p class="footer-tagline">
-                        Same Brand Never The Same Look
-                    </p>
+                    <p class="footer-tagline">Same Brand, Never The Same Look.</p>
                 </div>
                 <div class="col-md-3 text-right">
                     <div class="social-icons">
-                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
-                            <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram" target="_blank"
+                            rel="noopener">
+                            <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram"
+                                class="social-icon">
                         </a>
                     </div>
                 </div>
@@ -197,9 +236,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="copyright">
-                        © 2025 Own The Label Co.
-                    </p>
+                    <p class="copyright">© 2025 Own The Label Co.</p>
                 </div>
                 <div class="col-md-6 text-right">
                     <a href="#">Privacy Policy</a>
@@ -209,9 +246,9 @@
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="cart.js"></script>
+    <script src="../js/shared.js"></script>
     <script src="checkout.js"></script>
 </body>
 

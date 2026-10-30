@@ -20,7 +20,7 @@
                 <a class="navbar-brand logo order-xl-last" href="../index.html">
                     <img src="../img/logo2.png" alt="Own The Label">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -37,137 +37,121 @@
                         <li class="nav-item">
                             <a class="nav-link" href="../contact/Contact.html">Contact</a>
                         </li>
+                        <li class="nav-item nav-cart">
+                            <a class="nav-link" href="../checkout/checkout.html">Cart (<span class="cart-count">0</span>)</a>
+                        </li>
                     </ul>
-                    <a href="/checkout/checkout.html" class="btn btn-otl btn-sm ml-xl-auto mr-xl-4 mt-2 mt-xl-0">
-                        Checkout (<span class="cart-count">0</span>)
-                    </a>
                 </div>
             </div>
         </nav>
     </header>
 
     <main>
-        <h1 class="sr-only">Shop</h1>
+        
         <section id="shop-products">
             <div class="container">
+                <p class="section-eyebrow">THE COLLECTION</p>
+                <h1 class="page-title">Shop</h1>
                 <div class="row">
-                    <aside id="filters" class="col-lg-2">
-                        <div class="filter-group">
-                            <h2>CATEGORIES</h2>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="hoodies">
-                                <label class="form-check-label" for="hoodies">Hoodies</label>
+
+                    <aside id="filters" class="col-lg-3 col-xl-2">
+                        <button class="btn btn-outline-otl btn-block d-lg-none mb-3 filter-toggle" type="button"
+                            data-toggle="collapse" data-target="#filters-body">FILTERS</button>
+
+                        <div id="filters-body" class="collapse">
+                            <div class="filter-group">
+                                <h2>CATEGORIES</h2>
+                                <div class="form-check">
+                                    <input class="form-check-input f-category" type="checkbox" id="cat-hoodies" value="Hoodies">
+                                    <label class="form-check-label" for="cat-hoodies">Hoodies</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input f-category" type="checkbox" id="cat-shirts" value="Shirts">
+                                    <label class="form-check-label" for="cat-shirts">Shirts</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input f-category" type="checkbox" id="cat-shorts" value="Shorts">
+                                    <label class="form-check-label" for="cat-shorts">Shorts</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input f-category" type="checkbox" id="cat-barong" value="Barong">
+                                    <label class="form-check-label" for="cat-barong">Barong</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input f-category" type="checkbox" id="cat-polo" value="Polo">
+                                    <label class="form-check-label" for="cat-polo">Polo</label>
+                                </div>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="shirts">
-                                <label class="form-check-label" for="shirts">Shirts</label>
+
+                            <div class="filter-group">
+                                <h2>SIZE</h2>
+                                <div class="form-check">
+                                    <input class="form-check-input f-size" type="checkbox" id="size-small" value="Small">
+                                    <label class="form-check-label" for="size-small">Small</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input f-size" type="checkbox" id="size-medium" value="Medium">
+                                    <label class="form-check-label" for="size-medium">Medium</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input f-size" type="checkbox" id="size-large" value="Large">
+                                    <label class="form-check-label" for="size-large">Large</label>
+                                </div>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="pants">
-                                <label class="form-check-label" for="pants">Pants</label>
+
+                            <div class="filter-group">
+                                <h2>PRICE</h2>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="price" id="price-all"
+                                        data-min="0" data-max="999999" checked>
+                                    <label class="form-check-label" for="price-all">All prices</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="price" id="price-low"
+                                        data-min="0" data-max="999.99">
+                                    <label class="form-check-label" for="price-low">Under ₱1,000</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="price" id="price-mid"
+                                        data-min="1000" data-max="1500">
+                                    <label class="form-check-label" for="price-mid">₱1,000 – ₱1,500</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="price" id="price-high"
+                                        data-min="1500.01" data-max="999999">
+                                    <label class="form-check-label" for="price-high">Above ₱1,500</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="filter-group">
-                            <h2>SIZE</h2>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="small">
-                                <label class="form-check-label" for="small">Small</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="medium">
-                                <label class="form-check-label" for="medium">Medium</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="large">
-                                <label class="form-check-label" for="large">Large</label>
-                            </div>
-                        </div>
-                        <div class="filter-group">
-                            <h2>COLOR</h2>
-                            <div class="color-options">
-                                <span class="color-swatch bg-dark"></span>
-                                <span class="color-swatch bg-white"></span>
-                            </div>
-                        </div>
-                        <div class="filter-group">
-                            <h2>PRICE</h2>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="price" id="under1000">
-                                <label class="form-check-label" for="under1000">Under ₱1000</label>
-                            </div>
+
+                            <button type="button" id="clear-filters" class="btn btn-outline-otl btn-sm btn-block mb-4">
+                                CLEAR FILTERS
+                            </button>
                         </div>
                     </aside>
 
-                    <div class="col-lg-10">
-                        <div class="product-toolbar d-flex justify-content-end">
-                            <select class="form-control sort-select">
-                                <option>Featured</option>
-                                <option>Newest</option>
-                                <option>Price: Low to High</option>
-                                <option>Price: High to Low</option>
+                    <div class="col-lg-9 col-xl-10">
+                        <div class="product-toolbar d-flex justify-content-between align-items-center">
+                            <p id="result-count" class="mb-0"></p>
+                            <select id="sort-select" class="form-control sort-select">
+                                <option value="featured">Featured</option>
+                                <option value="newest">Newest</option>
+                                <option value="low">Price: Low to High</option>
+                                <option value="high">Price: High to Low</option>
                             </select>
                         </div>
 
                         <h2 class="sr-only">Products</h2>
-                        <div class="row">
-                            <div class="col-lg-4 col-md-6 mb-5">
-                                <div class="product-card" data-id="1" data-name="Essential Hoodie" data-price="1299"
-                                    data-img="../img/product1.jpg">
-                                    <img src="../img/product1.jpg" alt="Essential Hoodie" class="img-fluid">
-                                    <h3>Essential Hoodie</h3>
-                                    <p class="product-price">₱1,299</p>
-                                    <select class="form-control form-control-sm size-select">
-                                        <option>Small</option>
-                                        <option>Medium</option>
-                                        <option>Large</option>
-                                    </select>
-                                    <button type="button" class="btn btn-otl btn-sm add-to-cart">Add to Cart</button>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 mb-5">
-                                <div class="product-card" data-id="2" data-name="Classic Tee" data-price="699"
-                                    data-img="../img/product2.jpg">
-                                    <img src="../img/product2.jpg" alt="Classic Tee" class="img-fluid">
-                                    <h3>Classic Tee</h3>
-                                    <p class="product-price">₱699</p>
-                                    <select class="form-control form-control-sm size-select">
-                                        <option>Small</option>
-                                        <option>Medium</option>
-                                        <option>Large</option>
-                                    </select>
-                                    <button type="button" class="btn btn-otl btn-sm add-to-cart">Add to Cart</button>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 mb-5">
-                                <div class="product-card" data-id="3" data-name="Cargo Pants" data-price="1499"
-                                    data-img="../img/product3.jpg">
-                                    <img src="../img/product3.jpg" alt="Cargo Pants" class="img-fluid">
-                                    <h3>Cargo Pants</h3>
-                                    <p class="product-price">₱1,499</p>
-                                    <select class="form-control form-control-sm size-select">
-                                        <option>Small</option>
-                                        <option>Medium</option>
-                                        <option>Large</option>
-                                    </select>
-                                    <button type="button" class="btn btn-otl btn-sm add-to-cart">Add to Cart</button>
-                                </div>
-                            </div>
+                        <div class="row" id="product-grid">
+                            <p class="col-12 text-center text-muted">Loading products...</p>
                         </div>
 
+                        <p id="no-results" class="text-center text-muted d-none">No products match your filters.</p>
+
                         <nav>
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">3</a>
-                                </li>
-                            </ul>
+                            <ul class="pagination justify-content-center" id="pagination"></ul>
                         </nav>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -182,13 +166,11 @@
                     </a>
                 </div>
                 <div class="col-md-6 text-center">
-                    <p class="footer-tagline">
-                        Same Brand Never The Same Look
-                    </p>
+                    <p class="footer-tagline">Same Brand, Never The Same Look.</p>
                 </div>
                 <div class="col-md-3 text-right">
                     <div class="social-icons">
-                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram" target="_blank" rel="noopener">
                             <img src="../img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
                         </a>
                     </div>
@@ -197,9 +179,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="copyright">
-                        © 2025 Own The Label Co.
-                    </p>
+                    <p class="copyright">© 2025 Own The Label Co.</p>
                 </div>
                 <div class="col-md-6 text-right">
                     <a href="#">Privacy Policy</a>
@@ -209,25 +189,10 @@
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="cart.js"></script>
-    <script>
-        document.querySelectorAll(".add-to-cart").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const card = btn.closest(".product-card");
-                addToCart({
-                    id: card.dataset.id,
-                    name: card.dataset.name,
-                    price: Number(card.dataset.price),
-                    img: card.dataset.img,
-                    size: card.querySelector(".size-select").value
-                });
-                btn.textContent = "Added ✓";
-                setTimeout(() => btn.textContent = "Add to Cart", 1000);
-            });
-        });
-    </script>
+    <script src="../js/shared.js"></script>
+    <script src="shop.js"></script>
 </body>
 
 </html>

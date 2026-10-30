@@ -15,10 +15,10 @@
     <header>
         <nav class="navbar navbar-expand-xl navbar-light otl-navbar" id="site-header">
             <div class="container-fluid px-3 px-xl-5">
-                <a class="navbar-brand logo order-xl-last" href="/index.html">
+                <a class="navbar-brand logo order-xl-last" href="index.html">
                     <img src="img/logo2.png" alt="Own The Label">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -34,6 +34,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact/Contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item nav-cart">
+                            <a class="nav-link" href="checkout/checkout.html">Cart (<span class="cart-count">0</span>)</a>
                         </li>
                     </ul>
                 </div>
@@ -87,82 +90,75 @@
         </section>
     </main>
 
-    <section class="featured-collection">
+        <section class="featured-collection">
         <div class="container">
-            <h2 class="section-title text-center mb-5">Featured Collection</h2>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="img/collectible1.jpg" class="card-img-top" alt="Product 1">
-                        <div class="card-body">
-                            <h3 class="card-title">OTL Shirt</h3>
-                            <p class="card-text">Black</p>
-                        </div>
-                    </div>
+            <div class="section-head">
+                <div>
+                    <p class="section-eyebrow">HANDPICKED</p>
+                    <h2 class="section-title">Featured Collection</h2>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="img/collectible2.jpg" class="card-img-top" alt="Product 2">
-                        <div class="card-body">
-                            <h3 class="card-title">OTL Hoodie</h3>
-                            <p class="card-text">Pink White</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="img/collectible3.jpg" class="card-img-top" alt="Product 3">
-                        <div class="card-body">
-                            <h3 class="card-title">OTL Short</h3>
-                            <p class="card-text">Black</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="img/product4.jpg" class="card-img-top" alt="Product 4">
-                        <div class="card-body">
-                            <h3 class="card-title">OTL Barong</h3>
-                            <p class="card-text">Black</p>
-                        </div>
-                    </div>
-                </div>
+                <a href="shop/shop.html" class="view-all">View all →</a>
+            </div>
+            <div class="row" id="featured-grid">
+                <p class="col-12 text-center text-muted">Loading...</p>
             </div>
         </div>
     </section>
 
     <section id="shop-category">
         <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">Shop By Category</h2>
-                <p class="section-subtitle">
-                    Discover pieces that match your style.
-                </p>
+            <div class="section-head">
+                <div>
+                    <p class="section-eyebrow">BROWSE</p>
+                    <h2 class="section-title">Shop By Category</h2>
+                </div>
+                <a href="shop/shop.html" class="view-all">Shop all →</a>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="category-card">
-                        <img src="img/hoodiecover.jpg" alt="Hoodies" class="img-fluid">
-                        <h3>Hoodies</h3>
-                    </div>
+                <div class="col-6 col-md-4 col-lg mb-4">
+                    <a href="shop/shop.html?category=Hoodies" class="cat-tile">
+                        <img src="img/products/hoodies/hoodie1.jpg" alt="Hoodies">
+                        <div class="cat-overlay">
+                            <h3>Hoodies</h3>
+                            <span class="cat-count" data-cat="Hoodies"></span>
+                        </div>
+                    </a>
                 </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="category-card">
-                        <img src="img/shirtcover.jpg" alt="Shirts" class="img-fluid">
-                        <h3>Shirts</h3>
-                    </div>
+                <div class="col-6 col-md-4 col-lg mb-4">
+                    <a href="shop/shop.html?category=Shirts" class="cat-tile">
+                        <img src="img/products/shirts/shirt1.jpg" alt="Shirts">
+                        <div class="cat-overlay">
+                            <h3>Shirts</h3>
+                            <span class="cat-count" data-cat="Shirts"></span>
+                        </div>
+                    </a>
                 </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="category-card">
-                        <img src="img/shortscover.jpg" alt="Shorts" class="img-fluid">
-                        <h3>Shorts</h3>
-                    </div>
+                <div class="col-6 col-md-4 col-lg mb-4">
+                    <a href="shop/shop.html?category=Shorts" class="cat-tile">
+                        <img src="img/products/shorts/short1.jpg" alt="Shorts">
+                        <div class="cat-overlay">
+                            <h3>Shorts</h3>
+                            <span class="cat-count" data-cat="Shorts"></span>
+                        </div>
+                    </a>
                 </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="category-card">
-                        <img src="img/barongcover.jpg" alt="Barong" class="img-fluid">
-                        <h3>Barong</h3>
-                    </div>
+                <div class="col-6 col-md-4 col-lg mb-4">
+                    <a href="shop/shop.html?category=Barong" class="cat-tile">
+                        <img src="img/products/barong/barong1.jpg" alt="Barong">
+                        <div class="cat-overlay">
+                            <h3>Barong</h3>
+                            <span class="cat-count" data-cat="Barong"></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg mb-4">
+                    <a href="shop/shop.html?category=Polo" class="cat-tile">
+                        <img src="img/products/polo/polo1.png" alt="Polo">
+                        <div class="cat-overlay">
+                            <h3>Polo</h3>
+                            <span class="cat-count" data-cat="Polo"></span>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -189,7 +185,7 @@
                             people to embrace their identity, stand out from the crowd,
                             and truly own their story.
                         </p>
-                        <a href="#" class="btn btn-otl">
+                        <a href="brand/brand.html" class="btn btn-otl">
                             Learn More
                         </a>
                     </div>
@@ -208,7 +204,7 @@
                     <p class="section-subtitle">
                         Curated pieces designed to represent the identity and culture behind Own The Label™.
                     </p>
-                    <a href="#" class="btn btn-otl">
+                    <a href="shop/shop.html" class="btn btn-otl">
                         View Collection
                     </a>
                 </div>
@@ -216,17 +212,17 @@
                     <div class="row">
                         <div class="col-md-4 mb-4">
                             <div class="collectible-card">
-                                <img src="img/collectible1.jpg" alt="Collectible 1" class="img-fluid">
+                                <img src="img/products/shorts/short4.jpg" alt="Collectible 1" class="img-fluid">
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="collectible-card">
-                                <img src="img/collectible2.jpg" alt="Collectible 2" class="img-fluid">
+                                <img src="img/products/shirts/shirt2.jpg" alt="Collectible 2" class="img-fluid">
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="collectible-card">
-                                <img src="img/collectible3.jpg" alt="Collectible 3" class="img-fluid">
+                                <img src="img/products/hoodies/hoodie3.jpg" alt="Collectible 3" class="img-fluid">
                             </div>
                         </div>
                     </div>
@@ -263,18 +259,16 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-3">
-                    <a href="/index.html" class="footer-logo">
+                    <a href="index.html" class="footer-logo">
                         <img src="img/logo3.png" alt="Own The Label">
                     </a>
                 </div>
                 <div class="col-md-6 text-center">
-                    <p class="footer-tagline">
-                        Same Brand Never The Same Look
-                    </p>
+                    <p class="footer-tagline">Same Brand, Never The Same Look.</p>
                 </div>
                 <div class="col-md-3 text-right">
                     <div class="social-icons">
-                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram">
+                        <a href="https://instagram.com/ownthelabel.co" aria-label="Instagram" target="_blank" rel="noopener">
                             <img src="img/instagram-logo-facebook-svgrepo-com.svg" alt="Instagram" class="social-icon">
                         </a>
                     </div>
@@ -283,9 +277,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="copyright">
-                        © 2025 Own The Label Co.
-                    </p>
+                    <p class="copyright">© 2025 Own The Label Co.</p>
                 </div>
                 <div class="col-md-6 text-right">
                     <a href="#">Privacy Policy</a>
@@ -296,47 +288,80 @@
     </footer>
 
     <script>
-    var heroTitle = document.getElementById("hero-title");
-    var siteHeader = document.getElementById("site-header");
-    var heroSection = document.getElementById("hero");
+        var heroTitle = document.getElementById("hero-title");
+        var siteHeader = document.getElementById("site-header");
+        var heroSection = document.getElementById("hero");
 
-    var shrinkDistance = heroSection.offsetHeight * 0.6;
-    var startTopPx = window.innerHeight / 2;
-    var headerTopPx = 45;
-    var startScale = 1;
-    var endScale = 0.28;
-    var currentProgress = 0;
-    var easing = 0.08;
+        var shrinkDistance = heroSection.offsetHeight * 0.6;
+        var startTopPx = window.innerHeight / 2;
+        var headerTopPx = 45;
+        var startScale = 1;
+        var endScale = 0.28;
+        var currentProgress = 0;
+        var easing = 0.08;
 
-    function animate(){
-        var targetProgress = window.scrollY / shrinkDistance;
-        if (targetProgress > 1) targetProgress = 1;
-        if (targetProgress < 0) targetProgress = 0;
+        function animate() {
+            var targetProgress = window.scrollY / shrinkDistance;
+            if (targetProgress > 1) targetProgress = 1;
+            if (targetProgress < 0) targetProgress = 0;
 
-        currentProgress += (targetProgress - currentProgress) * easing;
+            currentProgress += (targetProgress - currentProgress) * easing;
 
-        var currentScale = startScale - (currentProgress * (startScale - endScale));
-        var currentTopPx = startTopPx - (currentProgress * (startTopPx - headerTopPx));
+            var currentScale = startScale - (currentProgress * (startScale - endScale));
+            var currentTopPx = startTopPx - (currentProgress * (startTopPx - headerTopPx));
 
-        heroTitle.style.top = currentTopPx + "px";
-        heroTitle.style.transform = "translate(-50%, -50%) scale(" + currentScale + ")";
+            heroTitle.style.top = currentTopPx + "px";
+            heroTitle.style.transform = "translate(-50%, -50%) scale(" + currentScale + ")";
 
-        if (currentProgress >= 0.98) {
-            siteHeader.classList.add("is-scrolled");
-        } else if (currentProgress < 0.9) {
-            siteHeader.classList.remove("is-scrolled");
+            if (currentProgress >= 0.98) {
+                siteHeader.classList.add("is-scrolled");
+            } else if (currentProgress < 0.9) {
+                siteHeader.classList.remove("is-scrolled");
+            }
+
+            requestAnimationFrame(animate);
         }
 
-        requestAnimationFrame(animate);
-    }
+        window.addEventListener("resize", function () {
+            shrinkDistance = heroSection.offsetHeight * 0.6;
+            startTopPx = window.innerHeight / 2;
+        });
 
-    window.addEventListener("resize", function(){
-        shrinkDistance = heroSection.offsetHeight * 0.6;
-        startTopPx = window.innerHeight / 2;
-    });
+        animate();
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/shared.js"></script>
+    <script>
+        fetch("api/products.php")
+            .then(function (res) { return res.json(); })
+            .then(function (products) {
 
-    animate();
-</script>
+                var featured = products.filter(function (p) { return p.is_featured === 1; }).slice(0, 4);
+
+                $("#featured-grid").html(featured.map(function (p) {
+                    return '<div class="col-6 col-lg-3 mb-4">' +
+                        '<a href="shop/shop.html?category=' + encodeURIComponent(p.category) + '" class="fc-card">' +
+                        '<div class="fc-img"><img src="' + esc(p.image) + '" alt="' + esc(p.name) + '" loading="lazy"></div>' +
+                        '<div class="fc-info">' +
+                        '<span class="fc-cat">' + esc(p.category) + '</span>' +
+                        '<h3>' + esc(p.name) + '</h3>' +
+                        '<p class="fc-price">' + formatPeso(p.price) + '</p>' +
+                        '</div></a>' +
+                        ratingHtml(p) +
+                        '</div>';
+                }).join(""));
+
+                $(".cat-count").each(function () {
+                    var cat = $(this).data("cat");
+                    var total = products.filter(function (p) { return p.category === cat; }).length;
+                    $(this).text(total + (total === 1 ? " item" : " items"));
+                });
+            })
+            .catch(function () {
+                $("#featured-grid").html('<p class="col-12 text-center text-muted">Could not load products.</p>');
+            });
+    </script>
 </body>
 
 </html>
